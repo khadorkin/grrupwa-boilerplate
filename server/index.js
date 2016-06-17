@@ -18,16 +18,16 @@ graphQLServer.listen(GRAPHQL_PORT, () => console.log(
 
 const compiler = webpack(webpackConfig);
 
-const app = new WebpackDevServer(compiler, {
-  // contentBase: '/static/',
-  proxy: { '/graphql': `http://localhost:${GRAPHQL_PORT}` },
-  publicPath: '/static/',
-  stats: { colors: true },
-});
-
-app.use('/static', express.static(path.resolve(__dirname, 'static')));
-
-// Serve static resources
-app.listen(APP_PORT, () => {
-  console.log(`App is now running on http://localhost:${APP_PORT}`);
-});
+// const app = new WebpackDevServer(compiler, {
+//   // contentBase: '/static/',
+//   proxy: { '/graphql': `http://localhost:${GRAPHQL_PORT}` },
+//   publicPath: '/static/',
+//   stats: { colors: true },
+// });
+//
+// app.use('/static', express.static(path.resolve(__dirname, 'static')));
+//
+// // Serve static resources
+// app.listen(APP_PORT, () => {
+//   console.log(`App is now running on http://localhost:${APP_PORT}`);
+// });

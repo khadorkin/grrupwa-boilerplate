@@ -1,5 +1,6 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
+import webpack from 'webpack';
 import path from 'path';
 import fs from 'fs';
 
@@ -11,19 +12,27 @@ fs.readdirSync('node_modules')
 export default {
   devtool: 'source-map',
   entry: {
-    server: './server/server',
+    server: './server',
   },
   output: {
     path: 'build',
     filename: '[name].js',
   },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
   plugins: [
     new ExtractTextPlugin('static/styles.css', { allChunks: true }),
+    new webpack.BannerPlugin({
+      banner: 'require("source-map-support").install();',
+      raw: true,
+      entryOnly: false,
+    }),
   ],
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         loader: 'babel',
         include: path.join(__dirname, 'source'),
       },
