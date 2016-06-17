@@ -1,0 +1,63 @@
+{
+  "name": "react-relay-graphql-isomorphic-pwa-boilerplate",
+  "version": "0.0.1",
+  "description": "Boilerplate for ultimate stack",
+  "main": "index.js",
+  "scripts": {
+    "update-schema": "babel-node ./tools/updateSchema.js",
+    "bundle:server": "babel-node ./tools/bundler.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minheq/react-relay-graphql-isomorphic-pwa-boilerplate.git"
+  },
+  "keywords": [
+    "react",
+    "relay",
+    "graphql",
+    "isomorphic",
+    "pwa",
+    "boilerplate"
+  ],
+  "author": "Vu Hoang Minh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/minheq/react-relay-graphql-isomorphic-pwa-boilerplate/issues"
+  },
+  "homepage": "https://github.com/minheq/react-relay-graphql-isomorphic-pwa-boilerplate#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-relay-plugin": "^0.9.0",
+    "eslint": "^2.12.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-jsx-a11y": "^1.5.3",
+    "eslint-plugin-react": "^5.2.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "flow-bin": "^0.27.0",
+    "postcss-loader": "^0.9.1",
+    "react-hot-loader": "^3.0.0-beta.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.1.0-beta.13",
+    "webpack-dev-server": "^2.1.0-beta.0"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.3",
+    "graphql": "^0.6.0",
+    "graphql-relay": "^0.4.2",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-relay": "^0.9.0",
+    "react-router": "^2.4.1"
+  }
+}
