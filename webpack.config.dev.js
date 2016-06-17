@@ -1,15 +1,17 @@
-import path from 'path';
-import webpack from 'webpack';
+const path = require('path');
+const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 
-export default {
+module.exports = {
   devtool: 'source-map',
   entry: [
-    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
+    'react-hot-loader/patch',
     './app/client',
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'build/static'),
     filename: 'bundle.js',
     publicPath: '/static/',
   },
@@ -24,8 +26,16 @@ export default {
       {
         test: /\.jsx?$/,
         loaders: ['babel'],
-        include: path.join(__dirname, 'src'),
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        loaders: ['style', 'css?modules&importLoaders=1', 'postcss'],
+        exclude: /node_modules/,
       },
     ],
+  },
+  postcss() {
+    return [autoprefixer];
   },
 };

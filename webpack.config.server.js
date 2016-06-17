@@ -33,13 +33,13 @@ export default {
     loaders: [
       {
         test: /\.jsx?$/,
-        loader: 'babel',
-        include: path.join(__dirname, 'source'),
+        loaders: ['babel'],
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1', 'postcss'),
-        include: path.join(__dirname, 'source'),
+        exclude: /node_modules/,
       },
     ],
   },
