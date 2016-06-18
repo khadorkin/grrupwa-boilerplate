@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
+import styles from './App.css';
 
 class App extends React.Component {
   render() {
-    return <div>dick</div>;
+    return <div className={styles.App}>2</div>;
   }
 }
 

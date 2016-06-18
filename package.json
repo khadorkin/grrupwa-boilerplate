@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "update-schema": "babel-node ./tools/updateSchema.js",
-    "build:app": "babel-node ./tools/bundleApp.js",
-    "build:server": "babel-node ./tools/bundleServer.js",
-    "dev:app": "NODE_ENV=development node tools/devApp.js",
-    "dev:server": "nodemon ./build/server.js"
+    "bundle": "babel-node ./tools/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -47,14 +44,14 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "flow-bin": "^0.27.0",
-    "html-webpack-plugin": "^2.21.0",
     "nodemon": "^1.9.2",
     "postcss-loader": "^0.9.1",
     "react-hot-loader": "^3.0.0-beta.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.1.0-beta.13",
-    "webpack-dev-server": "^2.1.0-beta.0"
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
     "express": "^4.14.0",

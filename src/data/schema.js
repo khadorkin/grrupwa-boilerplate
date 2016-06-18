@@ -24,7 +24,7 @@ import {
   getFactions,
   getShip,
   getShips,
-} from '../database';
+} from './database';
 
 /**
  * This is a basic end-to-end test, designed to demonstrate the various

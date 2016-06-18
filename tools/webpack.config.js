@@ -9,10 +9,50 @@ fs.readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
   .forEach(mod => { nodeModules[mod] = `commonjs ${mod}`; });
 
-export default {
+const clientConfig = {
+  devtool: 'source-map',
+  entry: [
+    'webpack-hot-middleware/client',
+    'react-hot-loader/patch',
+    './src/client',
+  ],
+  output: {
+    path: path.join(__dirname, '../build/static'),
+    filename: 'bundle.js',
+    publicPath: '/static/',
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ],
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel'],
+        query: {
+          plugins: ['react-hot-loader/babel'],
+        },
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        loaders: ['style', 'css?modules&importLoaders=1', 'postcss'],
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  postcss() {
+    return [autoprefixer];
+  },
+};
+
+const serverConfig = {
   devtool: 'source-map',
   entry: {
-    server: './server',
+    server: './src/server',
   },
   output: {
     path: 'build',
@@ -22,12 +62,12 @@ export default {
     extensions: ['', '.js', '.jsx'],
   },
   plugins: [
-    new ExtractTextPlugin('static/styles.css', { allChunks: true }),
     new webpack.BannerPlugin({
       banner: 'require("source-map-support").install();',
       raw: true,
       entryOnly: false,
     }),
+    new ExtractTextPlugin('static/styles.css', { allChunks: true }),
   ],
   module: {
     loaders: [
@@ -57,3 +97,5 @@ export default {
     return [autoprefixer];
   },
 };
+
+export default [clientConfig, serverConfig];
