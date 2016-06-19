@@ -8,12 +8,14 @@ const VERBOSE = process.argv.includes('--verbose');
 const clientConfig = {
   devtool: 'source-map',
   entry: [
-    'webpack-hot-middleware/client',
-    'react-hot-loader/patch',
+    ...DEBUG ? [
+      'react-hot-loader/patch',
+      'webpack-hot-middleware/client',
+    ] : [],
     './src/client',
   ],
   output: {
-    path: path.join(__dirname, '../build/static'),
+    path: path.join(__dirname, 'build/static'),
     filename: 'app.js',
     publicPath: '/static/',
   },
@@ -21,7 +23,19 @@ const clientConfig = {
     extensions: ['', '.js', '.jsx'],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
+    }),
+    ...DEBUG ? [
+      new webpack.HotModuleReplacementPlugin(),
+    ] : [
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: VERBOSE,
+        },
+      }),
+    ],
   ],
   cache: DEBUG,
   debug: DEBUG,
@@ -42,7 +56,7 @@ const clientConfig = {
         test: /\.jsx?$/,
         loaders: ['babel'],
         query: {
-          plugins: ['react-hot-loader/babel'],
+          plugins: DEBUG ? ['react-hot-loader/babel'] : [],
         },
         exclude: /node_modules/,
       },

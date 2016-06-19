@@ -1,9 +1,9 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
 import fs from 'fs';
 
 const DEBUG = !process.argv.includes('--release');
+const VERBOSE = process.argv.includes('--verbose');
 
 const nodeModules = {};
 fs.readdirSync('node_modules')
@@ -13,7 +13,7 @@ fs.readdirSync('node_modules')
 const serverConfig = {
   devtool: 'source-map',
   entry: [
-    'webpack/hot/poll',
+    ...DEBUG ? ['webpack/hot/poll'] : [],
     './src/server',
   ],
   output: {
@@ -24,12 +24,24 @@ const serverConfig = {
     extensions: ['', '.js', '.jsx'],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.BannerPlugin({
-      banner: 'require("source-map-support").install();',
-      raw: true,
-      entryOnly: false,
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
     }),
+    ...DEBUG ? [
+      new webpack.BannerPlugin({
+        banner: 'require("source-map-support").install();',
+        raw: true,
+        entryOnly: false,
+      }),
+      new webpack.HotModuleReplacementPlugin(),
+    ] : [
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: VERBOSE,
+        },
+      }),
+    ],
   ],
   module: {
     loaders: [
