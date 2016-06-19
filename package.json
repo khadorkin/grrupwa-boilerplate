@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "update-schema": "babel-node ./tools/updateSchema.js",
-    "bundle": "babel-node ./tools/bundle.js"
+    "start": "babel-node ./tools/start.js"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-relay-plugin": "^0.9.0",
+    "browser-sync": "^2.13.0",
     "css-loader": "^0.23.1",
     "eslint": "^2.12.0",
     "eslint-config-airbnb": "^9.0.1",
@@ -44,7 +45,6 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "flow-bin": "^0.27.0",
-    "nodemon": "^1.9.2",
     "postcss-loader": "^0.9.1",
     "react-hot-loader": "^3.0.0-beta.2",
     "style-loader": "^0.13.1",

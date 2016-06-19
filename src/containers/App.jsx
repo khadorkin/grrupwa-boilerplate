@@ -3,7 +3,9 @@ import styles from './App.css';
 
 class App extends React.Component {
   render() {
-    return <div className={styles.App}>2</div>;
+    return (
+      <div className={styles.App}>9</div>
+    );
   }
 }
 

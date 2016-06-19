@@ -1,67 +1,30 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
-import path from 'path';
 import fs from 'fs';
+
+const DEBUG = !process.argv.includes('--release');
 
 const nodeModules = {};
 fs.readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
   .forEach(mod => { nodeModules[mod] = `commonjs ${mod}`; });
 
-const clientConfig = {
+const serverConfig = {
   devtool: 'source-map',
   entry: [
-    'webpack-hot-middleware/client',
-    'react-hot-loader/patch',
-    './src/client',
+    'webpack/hot/poll',
+    './src/server',
   ],
   output: {
-    path: path.join(__dirname, '../build/static'),
-    filename: 'bundle.js',
-    publicPath: '/static/',
+    path: 'build',
+    filename: 'server.js',
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-  ],
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        loaders: ['babel'],
-        query: {
-          plugins: ['react-hot-loader/babel'],
-        },
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        loaders: ['style', 'css?modules&importLoaders=1', 'postcss'],
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  postcss() {
-    return [autoprefixer];
-  },
-};
-
-const serverConfig = {
-  devtool: 'source-map',
-  entry: {
-    server: './src/server',
-  },
-  output: {
-    path: 'build',
-    filename: '[name].js',
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-  },
-  plugins: [
     new webpack.BannerPlugin({
       banner: 'require("source-map-support").install();',
       raw: true,
@@ -98,4 +61,4 @@ const serverConfig = {
   },
 };
 
-export default [clientConfig, serverConfig];
+export default serverConfig;
