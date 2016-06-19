@@ -26,6 +26,7 @@ const serverConfig = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
+      __DEV__: DEBUG,
     }),
     ...DEBUG ? [
       new webpack.BannerPlugin({
@@ -52,7 +53,7 @@ const serverConfig = {
       },
       {
         test: /\.css$/,
-        loaders: ['isomorphic-style-loader', 'css?modules&importLoaders=1', 'postcss'],
+        loaders: ['isomorphic-style-loader', 'css?modules', 'postcss'],
         exclude: /node_modules/,
       },
     ],

@@ -1,3 +1,4 @@
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
 import path from 'path';
@@ -25,10 +26,12 @@ const clientConfig = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
+      __DEV__: DEBUG,
     }),
     ...DEBUG ? [
       new webpack.HotModuleReplacementPlugin(),
     ] : [
+      new ExtractTextPlugin('styles.css'),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -62,7 +65,9 @@ const clientConfig = {
       },
       {
         test: /\.css$/,
-        loaders: ['style', 'css?modules&importLoaders=1', 'postcss'],
+        loaders: DEBUG
+          ? ['style', 'css?modules', 'postcss']
+          : [ExtractTextPlugin.extract('style', 'css?modules', 'postcss')],
         exclude: /node_modules/,
       },
     ],

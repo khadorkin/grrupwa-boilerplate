@@ -20,6 +20,7 @@ app.get('*', (req, res) => {
     <head>
       <meta charset="utf-8">
       <link type='image/x-icon' rel='shortcut icon'>
+      ${!__DEV__ ? '<link rel="stylesheet" type="text/css" href="static/styles.css">' : ''}
     </head>
     <body>
       <div id="root">${ReactDOMServer.renderToString(<App />)}</div>
