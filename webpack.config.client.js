@@ -1,10 +1,9 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
 import path from 'path';
-import fs from 'fs';
 
 const DEBUG = !process.argv.includes('--release');
+const VERBOSE = process.argv.includes('--verbose');
 
 const clientConfig = {
   devtool: 'source-map',
@@ -24,6 +23,19 @@ const clientConfig = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
+  cache: DEBUG,
+  debug: DEBUG,
+  stats: {
+    colors: true,
+    reasons: DEBUG,
+    hash: VERBOSE,
+    version: VERBOSE,
+    timings: true,
+    chunks: VERBOSE,
+    chunkModules: VERBOSE,
+    cached: VERBOSE,
+    cachedAssets: VERBOSE,
+  },
   module: {
     loaders: [
       {

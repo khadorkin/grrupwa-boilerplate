@@ -17,7 +17,7 @@ let handleServerBundleComplete = () => {
       middleware: [
         webpackDevMiddleware(bundler, {
           publicPath: clientConfig.output.publicPath,
-          noInfo: true,
+          stats: clientConfig.stats,
         }),
         webpackHotMiddleware(bundler),
       ],
@@ -31,5 +31,7 @@ webpack(serverConfig).watch({
   aggregateTimeout: 300,
   poll: true,
 }, (err, stats) => {
+  if (err) console.log(err);
+  console.log(stats.toString(clientConfig.stats));
   handleServerBundleComplete();
 });

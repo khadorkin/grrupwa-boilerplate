@@ -30,7 +30,6 @@ const serverConfig = {
       raw: true,
       entryOnly: false,
     }),
-    new ExtractTextPlugin('static/styles.css', { allChunks: true }),
   ],
   module: {
     loaders: [
@@ -41,7 +40,7 @@ const serverConfig = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1', 'postcss'),
+        loaders: ['isomorphic-style-loader', 'css?modules&importLoaders=1', 'postcss'],
         exclude: /node_modules/,
       },
     ],
