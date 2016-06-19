@@ -67,7 +67,7 @@ const clientConfig = {
         test: /\.css$/,
         loaders: DEBUG
           ? ['style', 'css?modules', 'postcss']
-          : [ExtractTextPlugin.extract('style', 'css?modules', 'postcss')],
+          : ExtractTextPlugin.extract('style', 'css?modules', 'postcss'),
         exclude: /node_modules/,
       },
     ],
