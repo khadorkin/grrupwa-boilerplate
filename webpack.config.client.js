@@ -59,10 +59,15 @@ const clientConfig = {
         test: /\.jsx?$/,
         loaders: ['babel'],
         query: {
+          cacheDirectory: true,
           ...DEBUG ? {
-            plugins: ['react-hot-loader/babel'],
-            cacheDirectory: true,
-          } : {},
+            plugins: [
+              'react-hot-loader/babel',
+              path.join(__dirname, 'scripts/babelRelayPlugin'),
+            ],
+          } : {
+            plugins: [path.join(__dirname, 'scripts/babelRelayPlugin')],
+          },
         },
         exclude: /node_modules/,
       },

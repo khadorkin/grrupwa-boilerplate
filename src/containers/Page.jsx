@@ -1,21 +1,21 @@
 import React from 'react';
 import Relay from 'react-relay';
 
-class App extends React.Component {
+class Page extends React.Component {
   static contextTypes = {
     relay: Relay.PropTypes.Environment,
   };
 
   render() {
     return (
-      <div>
-        {this.props.children}
-      </div>
+      <section className="main">
+        Page
+      </section>
     );
   }
 }
 
-export default Relay.createContainer(App, {
+export default Relay.createContainer(Page, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {

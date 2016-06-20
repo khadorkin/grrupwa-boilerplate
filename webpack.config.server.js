@@ -1,6 +1,7 @@
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
 import fs from 'fs';
+import path from 'path';
 
 const DEBUG = !process.argv.includes('--release');
 const VERBOSE = process.argv.includes('--verbose');
@@ -51,6 +52,7 @@ const serverConfig = {
         loaders: ['babel'],
         query: {
           ...DEBUG ? {
+            plugins: [path.join(__dirname, 'scripts/babelRelayPlugin')],
             cacheDirectory: true,
           } : {},
         },
