@@ -49,6 +49,11 @@ const serverConfig = {
       {
         test: /\.jsx?$/,
         loaders: ['babel'],
+        query: {
+          ...DEBUG ? {
+            cacheDirectory: true,
+          } : {},
+        },
         exclude: /node_modules/,
       },
       {

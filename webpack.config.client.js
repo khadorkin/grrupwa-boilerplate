@@ -59,7 +59,10 @@ const clientConfig = {
         test: /\.jsx?$/,
         loaders: ['babel'],
         query: {
-          plugins: DEBUG ? ['react-hot-loader/babel'] : [],
+          ...DEBUG ? {
+            plugins: ['react-hot-loader/babel'],
+            cacheDirectory: true,
+          } : {},
         },
         exclude: /node_modules/,
       },
