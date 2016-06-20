@@ -42,12 +42,12 @@ if (DEBUG) {
     handleServerBundleComplete();
   });
 } else {
-  webpack(serverConfig).run((err, stats) => {
-    if (err) console.log(err);
-    console.log(stats.toString(clientConfig.stats));
-    webpack(clientConfig).run((err, stats) => {
-      if (err) console.log(err);
-      console.log(stats.toString(clientConfig.stats));
+  webpack(serverConfig).run((errServer, serverStats) => {
+    if (errServer) console.log(errServer);
+    console.log(serverStats.toString(clientConfig.stats));
+    webpack(clientConfig).run((errClient, clientStats) => {
+      if (errClient) console.log(errClient);
+      console.log(clientStats.toString(clientConfig.stats));
       runServer();
     });
   });
