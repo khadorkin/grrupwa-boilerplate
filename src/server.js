@@ -45,7 +45,6 @@ app.get('*', (req, res, next) => {
         <body>
           <div id="root">${reactOutput}</div>
           <script id="preloadedData" type="application/json">
-              <%- JSON.stringify(preloadedData).replace(/\//g, '\\/') %>
               ${JSON.stringify(data).replace(/\//g, '\\/')}
           </script>
           <script src="static/app.js"></script>
