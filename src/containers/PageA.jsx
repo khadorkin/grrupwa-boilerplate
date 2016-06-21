@@ -1,7 +1,8 @@
 import React from 'react';
 import Relay from 'react-relay';
+import { Link } from 'react-router/es6';
 
-class Page extends React.Component {
+class PageA extends React.Component {
   static contextTypes = {
     relay: Relay.PropTypes.Environment,
   };
@@ -9,13 +10,13 @@ class Page extends React.Component {
   render() {
     return (
       <section className="main">
-        Page
+        PageA <Link to="/b">Go to Page B</Link>
       </section>
     );
   }
 }
 
-export default Relay.createContainer(Page, {
+export default Relay.createContainer(PageA, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {

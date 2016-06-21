@@ -3,7 +3,7 @@ import IsomorphicRelay from 'isomorphic-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import React from 'react';
 import { render } from 'react-dom';
-import { browserHistory, match, Router } from 'react-router';
+import { browserHistory, match, Router } from 'react-router/es6';
 import Relay from 'react-relay';
 import routes from './routes';
 
@@ -26,7 +26,7 @@ match({ routes, history: browserHistory }, (error, redirectLocation, renderProps
   });
 });
 
-if (module.hot) {
+if (__DEV__ && module.hot) {
   module.hot.accept('./routes', () => {
     const nextRoutes = require('./routes').default;
 

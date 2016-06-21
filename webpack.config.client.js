@@ -18,6 +18,7 @@ const clientConfig = {
   output: {
     path: path.join(__dirname, 'build/static'),
     filename: 'app.js',
+    chunkFilename: '[id].app.js',
     publicPath: '/static/',
   },
   resolve: {
@@ -27,6 +28,10 @@ const clientConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: !DEBUG,
+      debug: DEBUG,
     }),
     ...DEBUG ? [
       new webpack.HotModuleReplacementPlugin(),

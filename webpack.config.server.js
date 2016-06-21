@@ -29,6 +29,10 @@ const serverConfig = {
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
     }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: !DEBUG,
+      debug: DEBUG,
+    }),
     ...DEBUG ? [
       new webpack.BannerPlugin({
         banner: 'require("source-map-support").install();',
@@ -54,7 +58,9 @@ const serverConfig = {
           ...DEBUG ? {
             plugins: [path.join(__dirname, 'scripts/babelRelayPlugin')],
             cacheDirectory: true,
-          } : {},
+          } : {
+            plugins: [path.join(__dirname, 'scripts/babelRelayPlugin')],
+          },
         },
         exclude: /node_modules/,
       },
