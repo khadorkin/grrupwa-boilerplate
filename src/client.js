@@ -30,7 +30,12 @@ if (module.hot) {
   module.hot.accept('./routes', () => {
     const nextRoutes = require('./routes').default;
 
-    match({ routes: nextRoutes, history: browserHistory }, (error, redirectLocation, renderProps) => {
+    // Displays react-router error on the browser. Might be required to replace with
+    // React-transform to avoid seeing the error
+    match({
+      routes: nextRoutes,
+      history: browserHistory,
+    }, (error, redirectLocation, renderProps) => {
       IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
         render(
           <AppContainer>
