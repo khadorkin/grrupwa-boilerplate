@@ -1,10 +1,10 @@
-const browserSync = require('browser-sync');
-const webpack = require('webpack');
-const serverConfig = require('../webpack.config.server.js');
-const clientConfig = require('../webpack.config.client.js');
-const runServer = require('./runServer');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+import browserSync from 'browser-sync';
+import webpack from 'webpack';
+import serverConfig from '../webpack.config.server.js';
+import clientConfig from '../webpack.config.client.js';
+import runServer from './runServer';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const DEBUG = !process.argv.includes('--release');
 
