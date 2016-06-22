@@ -16,7 +16,7 @@ const GRAPHQL_URL = `http://localhost:${APP_PORT}/graphql`;
 
 const networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL);
 
-app.use('/static', express.static(path.resolve(__dirname, 'static')));
+app.use('/public', express.static(path.resolve(__dirname, 'public')));
 
 app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
 
@@ -40,14 +40,14 @@ app.get('*', (req, res, next) => {
         <head>
           <meta charset="utf-8">
           <link type='image/x-icon' rel='shortcut icon'>
-          ${!__DEV__ ? '<link rel="stylesheet" type="text/css" href="static/styles.css">' : ''}
+          ${!__DEV__ ? '<link rel="stylesheet" type="text/css" href="public/css/styles.css">' : ''}
         </head>
         <body>
           <div id="root">${reactOutput}</div>
           <script id="preloadedData" type="application/json">
               ${JSON.stringify(data).replace(/\//g, '\\/')}
           </script>
-          <script src="static/app.js"></script>
+          <script src="public/js/app.js"></script>
         </body>
         </html>
       `);

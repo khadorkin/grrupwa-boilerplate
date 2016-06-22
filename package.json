@@ -6,6 +6,7 @@
   "scripts": {
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "precache": "babel-node ./scripts/swPrecache.js",
+    "clean": "babel-node scripts/run clean",
     "copy": "babel-node scripts/run copy",
     "build": "babel-node ./scripts/build.js",
     "start": "npm run update-schema && babel-node ./scripts/start.js"
@@ -42,6 +43,7 @@
     "bluebird": "^3.4.1",
     "browser-sync": "^2.13.0",
     "css-loader": "^0.23.1",
+    "del": "^2.2.1",
     "eslint": "^2.13.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.1",
@@ -52,6 +54,7 @@
     "flow-bin": "^0.27.0",
     "gaze": "^1.0.0",
     "isomorphic-style-loader": "^1.0.0",
+    "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "postcss-loader": "^0.9.1",
     "react-hot-loader": "^3.0.0-beta.2",
