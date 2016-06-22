@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "update-schema": "babel-node ./scripts/updateSchema.js",
+    "precache": "babel-node ./scripts/swPrecache.js",
     "start": "npm run update-schema && babel-node ./scripts/start.js"
   },
   "repository": {
@@ -52,6 +53,7 @@
     "style-loader": "^0.13.1",
     "stylelint": "^6.6.0",
     "stylelint-config-standard": "^9.0.0",
+    "sw-precache": "^3.2.0",
     "url-loader": "^0.5.7",
     "webpack": "^2.1.0-beta.13",
     "webpack-dev-middleware": "^1.6.1",
