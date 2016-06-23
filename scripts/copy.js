@@ -11,8 +11,6 @@ import path from 'path';
 import gaze from 'gaze';
 import Promise from 'bluebird';
 
-const DEBUG = !process.argv.includes('--release');
-
 /**
  * Copies static files such as robots.txt, favicon.ico to the
  * output (build) folder.
@@ -24,7 +22,7 @@ async function copy({ watch } = {}) {
     ncp('src/public', 'build/public'),
   ]);
 
-  if (DEBUG || watch) {
+  if (watch) {
     const watcher = await new Promise((resolve, reject) => {
       gaze('src/public/**/*.*', (err, val) => err ? reject(err) : resolve(val));
     });
