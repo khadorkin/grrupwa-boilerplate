@@ -10,6 +10,16 @@ async function precache() {
         `${path.join(__dirname, '../build/public')}/**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff,json}`,
       ],
       verbose: VERBOSE,
+      runtimeCaching: [
+        {
+          urlPattern: "'/graphql'",
+          handler: 'networkFirst',
+        },
+        {
+          urlPattern: "'*'",
+          handler: 'fastest',
+        },
+      ],
       stripPrefix: path.join(__dirname, '../build/public/'),
       importScripts: ['sw-toolbox.js'],
     }, output => resolve(output));
