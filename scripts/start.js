@@ -16,8 +16,8 @@ const DEBUG = !process.argv.includes('--release');
 async function start() {
   await run(clean);
   await run(build);
-  await run(precache);
   await run(copy.bind(undefined, { watch: true }));
+  await run(precache);
   if (!DEBUG) {
     runServer();
     return;
