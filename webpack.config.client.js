@@ -16,10 +16,10 @@ const clientConfig = {
     './src/client',
   ],
   output: {
-    path: path.join(__dirname, 'build/static'),
+    path: path.join(__dirname, 'build/public/js'),
     filename: 'app.js',
     chunkFilename: '[id].app.js',
-    publicPath: '/static/',
+    publicPath: '/js/',
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
