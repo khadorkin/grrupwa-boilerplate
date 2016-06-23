@@ -6,6 +6,7 @@
   "scripts": {
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "clean": "babel-node scripts/run clean",
+    "precache": "babel-node scripts/run precache",
     "copy": "babel-node scripts/run copy",
     "build": "babel-node scripts/run build",
     "start": "npm run update-schema && babel-node scripts/run start"
