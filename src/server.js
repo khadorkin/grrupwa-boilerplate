@@ -16,7 +16,7 @@ const GRAPHQL_URL = `http://localhost:${APP_PORT}/graphql`;
 
 const networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL);
 
-app.use('/public', express.static(path.resolve(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
 
@@ -47,37 +47,36 @@ app.get('*', (req, res, next) => {
           <link rel="manifest" href="manifest.json">
           <meta name="theme-color" content="#7acc9c">
 
-          <link rel="shortcut icon" href="public/img/favicon.ico">
-          <link rel="apple-touch-icon" sizes="57x57" href="public/img/apple-touch-icon-57x57.png">
-          <link rel="apple-touch-icon" sizes="60x60" href="public/img/apple-touch-icon-60x60.png">
-          <link rel="apple-touch-icon" sizes="72x72" href="public/img/apple-touch-icon-72x72.png">
-          <link rel="apple-touch-icon" sizes="76x76" href="public/img/apple-touch-icon-76x76.png">
-          <link rel="apple-touch-icon" sizes="114x114" href="public/img/apple-touch-icon-114x114.png">
-          <link rel="apple-touch-icon" sizes="120x120" href="public/img/apple-touch-icon-120x120.png">
-          <link rel="apple-touch-icon" sizes="144x144" href="public/img/apple-touch-icon-144x144.png">
-          <link rel="apple-touch-icon" sizes="152x152" href="public/img/apple-touch-icon-152x152.png">
-          <link rel="apple-touch-icon" sizes="180x180" href="public/img/apple-touch-icon-180x180.png">
-          <link rel="icon" type="image/png" href="public/img/favicon-32x32.png" sizes="32x32">
-          <link rel="icon" type="image/png" href="public/img/android-chrome-192x192.png" sizes="192x192">
-          <link rel="icon" type="image/png" href="public/img/favicon-96x96.png" sizes="96x96">
-          <link rel="icon" type="image/png" href="public/img/favicon-16x16.png" sizes="16x16">
-          <link rel="manifest" href="public/img/manifest.json">
-          <link rel="mask-icon" href="public/img/safari-pinned-tab.svg" color="#7acc9c">
+          <link rel="shortcut icon" href=img/favicon.ico">
+          <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
+          <link rel="apple-touch-icon" sizes="60x60" href="img/apple-touch-icon-60x60.png">
+          <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
+          <link rel="apple-touch-icon" sizes="76x76" href="img/apple-touch-icon-76x76.png">
+          <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
+          <link rel="apple-touch-icon" sizes="120x120" href="img/apple-touch-icon-120x120.png">
+          <link rel="apple-touch-icon" sizes="144x144" href="img/apple-touch-icon-144x144.png">
+          <link rel="apple-touch-icon" sizes="152x152" href="img/apple-touch-icon-152x152.png">
+          <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon-180x180.png">
+          <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32">
+          <link rel="icon" type="image/png" href="img/android-chrome-192x192.png" sizes="192x192">
+          <link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96">
+          <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16">
+          <link rel="manifest" href="img/manifest.json">
+          <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#7acc9c">
           <meta name="msapplication-TileColor" content="#267F4B">
-          <meta name="msapplication-TileImage" content="public/img/mstile-144x144.png">
+          <meta name="msapplication-TileImage" content=img/mstile-144x144.png">
           <meta name="theme-color" content="#7acc9c">
-          <meta name="msapplication-config" content="public/img/browserconfig.xml">
-          ${!__DEV__ ? '<link rel="stylesheet" type="text/css" href="public/css/styles.css">' : ''}
+          <meta name="msapplication-config" content=img/browserconfig.xml">
         </head>
         <body>
           <div id="root">${reactOutput}</div>
           <script id="preloadedData" type="application/json">
               ${JSON.stringify(data).replace(/\//g, '\\/')}
           </script>
-          <script src="public/js/app.js"></script>
-            <script>
+          <script src="js/app.js"></script>
+          <script>
             if ('serviceWorker' in navigator) {
-              navigator.serviceWorker.register('./public/service-worker.js')
+              navigator.serviceWorker.register('./service-worker.js', { scope: './' })
                 .then(function(registration) {
                   registration.onupdatefound = function() {
                     if (navigator.serviceWorker.controller) {
@@ -86,6 +85,7 @@ app.get('*', (req, res, next) => {
                       installingWorker.onstatechange = function() {
                         switch (installingWorker.state) {
                           case 'installed':
+                            console.log('Service Worker installed.');
                             break;
                           case 'redundant':
                             throw new Error('The installing ' +

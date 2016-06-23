@@ -3,36 +3,50 @@ import webpack from 'webpack';
 import serverConfig from '../webpack.config.server.js';
 import clientConfig from '../webpack.config.client.js';
 import runServer from './runServer';
+import run from './run';
+import copy from './copy';
+import clean from './clean';
+import precache from './precache';
+import build from './build';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const DEBUG = !process.argv.includes('--release');
 
-let handleServerBundleComplete = () => {
-  runServer();
+async function start() {
+  await run(clean);
+  await run(build);
+  await run(precache);
+  await run(copy.bind(undefined, { watch: true }));
+  if (!DEBUG) {
+    runServer();
+    return;
+  }
 
-  const bundler = webpack(clientConfig);
-  const bs = browserSync.create();
+  let handleServerBundleComplete = () => {
+    runServer();
 
-  bs.init({
-    proxy: {
-      ...DEBUG ? {} : { notify: false, ui: false },
-      target: 'http://localhost:3000',
-      middleware: [
-        webpackDevMiddleware(bundler, {
-          publicPath: clientConfig.output.publicPath,
-          stats: clientConfig.stats,
-        }),
-        webpackHotMiddleware(bundler),
-      ],
-    },
-    port: 3001,
-  });
+    const bundler = webpack(clientConfig);
+    const bs = browserSync.create();
 
-  handleServerBundleComplete = runServer;
-};
+    bs.init({
+      proxy: {
+        ...DEBUG ? {} : { notify: false, ui: false },
+        target: 'http://localhost:3000',
+        middleware: [
+          webpackDevMiddleware(bundler, {
+            publicPath: clientConfig.output.publicPath,
+            stats: clientConfig.stats,
+          }),
+          webpackHotMiddleware(bundler),
+        ],
+      },
+      port: 3001,
+    });
 
-if (DEBUG) {
+    handleServerBundleComplete = runServer;
+  };
+
   webpack(serverConfig).watch({
     aggregateTimeout: 300,
     poll: true,
@@ -41,7 +55,6 @@ if (DEBUG) {
     console.log(stats.toString(clientConfig.stats));
     handleServerBundleComplete();
   });
-} else {
-  require('./build');
-  runServer();
 }
+
+export default start;

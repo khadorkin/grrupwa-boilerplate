@@ -5,11 +5,10 @@
   "main": "index.js",
   "scripts": {
     "update-schema": "babel-node ./scripts/updateSchema.js",
-    "precache": "babel-node ./scripts/swPrecache.js",
     "clean": "babel-node scripts/run clean",
     "copy": "babel-node scripts/run copy",
-    "build": "babel-node ./scripts/build.js",
-    "start": "npm run update-schema && babel-node ./scripts/start.js"
+    "build": "babel-node scripts/run build",
+    "start": "npm run update-schema && babel-node scripts/run start"
   },
   "repository": {
     "type": "git",
