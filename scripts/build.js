@@ -6,7 +6,7 @@ async function build() {
   return new Promise((resolve, reject) => {
     webpack(serverConfig).run((errServer, serverStats) => {
       if (errServer) reject(errServer);
-      console.log(serverStats.toString(serverStats.stats));
+      console.log(serverStats.toString(serverConfig.stats));
       webpack(clientConfig).run((errClient, clientStats) => {
         if (errClient) reject(errClient);
         console.log(clientStats.toString(clientConfig.stats));
