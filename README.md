@@ -25,6 +25,8 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 - [x] PWA - App shell   
 - [x] PWA - offline   
 - [ ] Dynamic data caching   
+- [ ] Authentication on server   
+- [ ] Resize image loader    
 - [ ] Offline Handling status
 - [ ] PWA - push notifications
 - [ ] HTML template in js
