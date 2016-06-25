@@ -14,6 +14,20 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 1. Server-side rendering  
 2. Progressive Web Application (Use of service workers)  
 3. Push notifications   
-4. More...  
+4. Offline-first   
+5. More...  
 
-###WORK IN PROGRESS
+###ROADMAP
+
+- [x] production build
+- [x] Isomorphic relay/react-router
+- [x] codesplitting with react router
+- [x] PWA - App shell   
+- [x] PWA - offline   
+- [ ] Dynamic data caching   
+- [ ] Offline Handling status
+- [ ] PWA - push notifications
+- [ ] HTML template in js
+- [ ] critical css
+- [ ] add AMP support
+- [ ] add test-runner
