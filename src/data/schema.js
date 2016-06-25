@@ -23,7 +23,8 @@ import {
 
 import {
   User,
-  getTodo,
+  getItems,
+  getItem,
   getUser,
   getViewer,
 } from './database';
@@ -31,25 +32,63 @@ import {
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
-    if (type === 'Todo') {
-      return getTodo(id);
+    if (type === 'Item') {
+      return getItem(id);
     } else if (type === 'User') {
       return getUser(id);
     }
     return null;
   },
   (obj) => {
-    if (obj instanceof User) {
+    if (obj instanceof Item) {
+      return GraphQLItem;
+    } else if (obj instanceof User) {
       return GraphQLUser;
     }
     return null;
   }
 );
 
+const GraphQLItem = new GraphQLObjectType({
+  name: 'Item',
+  fields: {
+    id: globalIdField('Item'),
+    text: {
+      type: GraphQLString,
+      resolve: (obj) => obj.text,
+    },
+    category: {
+      type: GraphQLString,
+      resolve: (obj) => obj.category,
+    },
+  },
+  interfaces: [nodeInterface],
+});
+
+const {
+  connectionType: ItemsConnection,
+  edgeType: GraphQLItemEdge,
+} = connectionDefinitions({
+  name: 'Item',
+  nodeType: GraphQLItem,
+});
+
 const GraphQLUser = new GraphQLObjectType({
   name: 'User',
   fields: {
     id: globalIdField('User'),
+    items: {
+      type: ItemsConnection,
+      args: {
+        category: {
+          type: GraphQLString,
+          defaultValue: 'any',
+        },
+        ...connectionArgs,
+      },
+      resolve: (obj, { category, ...args }) =>
+        connectionFromArray(getItems(category), args),
+    },
   },
   interfaces: [nodeInterface],
 });

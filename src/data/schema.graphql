@@ -6,11 +6,35 @@ interface Node {
   id: ID!
 }
 
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
 type Root {
   viewer: User
   node(id: ID!): Node
 }
 
+type Todo implements Node {
+  id: ID!
+  text: String
+  category: String
+}
+
+type TodoConnection {
+  pageInfo: PageInfo!
+  edges: [TodoEdge]
+}
+
+type TodoEdge {
+  node: Todo
+  cursor: String!
+}
+
 type User implements Node {
   id: ID!
+  todos(category: String = "any", after: String, first: Int, before: String, last: Int): TodoConnection
 }
