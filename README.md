@@ -1,6 +1,6 @@
 # GRRUPWA Boilerplate
 
-**(G)**raphQL **(R)**elay **(R)**eact **(U)**niversal **(P)**rogressive **(W)**eb **(A)**pplication Boilerplate is an ultimate stack for modern applications.
+**G**raphQL **R**elay **R**eact **U**niversal **P**rogressive **W**eb **A**pplication Boilerplate is an ultimate stack for modern applications.
 
 The goal of the boilerplate is to provide the most optimal *Developer Experience* with focus on providing the best *User Experience*.
 
@@ -24,10 +24,9 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 - [x] PWA - App shell   
 - [x] Dynamic content caching   
 - [x] Offline Handling status   
-- [ ] Critical css   
-- [ ] Resize image loader    
-- [ ] Assets hash    
+- [x] Critical css   
 - [ ] HTML template   
+- [ ] Assets hash    
 - [ ] Test-suite   
 - [ ] Demo site   
 
@@ -36,3 +35,4 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 - [ ] Authentication on server   
 - [ ] HMR loading in memory for server bundle    
 - [ ] add AMP support   
+- [ ] Resize image loader    
