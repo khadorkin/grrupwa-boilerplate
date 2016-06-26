@@ -1,4 +1,5 @@
 import autoprefixer from 'autoprefixer';
+import precss from 'precss';
 import webpack from 'webpack';
 import fs from 'fs';
 import path from 'path';
@@ -28,6 +29,8 @@ const serverConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
+      __CLIENT__: false,
+      __SERVER__: true,
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: !DEBUG,
@@ -93,7 +96,7 @@ const serverConfig = {
   target: 'node',
   externals: nodeModules,
   postcss() {
-    return [autoprefixer];
+    return [autoprefixer, precss];
   },
 };
 

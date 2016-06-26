@@ -1,22 +1,17 @@
 import React from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
+import AppShell from '../components/AppShell';
+import styles from './App.css';
 
 class App extends React.Component {
   static contextTypes = {
     relay: Relay.PropTypes.Environment,
   }
 
-
   static childContextTypes = {
     isOnline: React.PropTypes.bool,
   };
-
-  getChildContext() {
-    return {
-      isOnline: true,
-    };
-  }
 
   constructor(props, context) {
     super(props, context);
@@ -27,6 +22,12 @@ class App extends React.Component {
   state = {
     isOnline: true,
   };
+
+  getChildContext() {
+    return {
+      isOnline: true,
+    };
+  }
 
   componentDidMount() {
     // This library does not support SSR, and since it is browser-specific
@@ -41,11 +42,11 @@ class App extends React.Component {
     Offline.off('down', this.updateOfflineStatus);
   }
 
-  updateOnlineStatus(event) {
+  updateOnlineStatus() {
     this.setState({ isOnline: true });
   }
 
-  updateOfflineStatus(event) {
+  updateOfflineStatus() {
     this.setState({ isOnline: false });
   }
 
@@ -53,13 +54,13 @@ class App extends React.Component {
     const { isOnline } = this.state;
 
     return (
-      <div>
+      <AppShell>
         <Link to="/">Home</Link>
         <Link to="/PageA">PageA</Link>
         <Link to="/PageB">PageB</Link>
         {this.props.children}
-        <div>Current status: {isOnline ? 'Online' : 'Offline'}</div>
-      </div>
+        <div className={styles.status}>Current status: {isOnline ? 'Online' : 'Offline'}</div>
+      </AppShell>
     );
   }
 }

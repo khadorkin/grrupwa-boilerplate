@@ -5,6 +5,8 @@ import IsomorphicRouter from 'isomorphic-relay-router';
 import path from 'path';
 import ReactDOMServer from 'react-dom/server';
 import Relay from 'react-relay';
+import React from 'react';
+import WithStylesContext from './components/WithStylesContext';
 
 import { schema } from './data/schema';
 import routes from './routes';
@@ -33,7 +35,14 @@ app.get('*', (req, res, next) => {
     }
 
     function render({ data, props }) {
-      const reactOutput = ReactDOMServer.renderToString(IsomorphicRouter.render(props));
+      const css = [];
+
+      const reactOutput = ReactDOMServer.renderToString(
+        <WithStylesContext onInsertCss={styles => css.push(styles._getCss())}>
+          {IsomorphicRouter.render(props)}
+        </WithStylesContext>
+      );
+
       res.send(`
         <!doctype html>
         <html>
@@ -67,6 +76,7 @@ app.get('*', (req, res, next) => {
           <meta name="msapplication-TileImage" content=img/mstile-144x144.png">
           <meta name="theme-color" content="#7acc9c">
           <meta name="msapplication-config" content=img/browserconfig.xml">
+          <style type="text/css">${css.join('')}</style>
         </head>
         <body>
           <div id="root">${reactOutput}</div>

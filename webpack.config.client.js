@@ -1,5 +1,6 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
+import precss from 'precss';
 import webpack from 'webpack';
 import path from 'path';
 
@@ -28,6 +29,8 @@ const clientConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
+      __CLIENT__: true,
+      __SERVER__: false,
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: !DEBUG,
@@ -36,7 +39,7 @@ const clientConfig = {
     ...DEBUG ? [
       new webpack.HotModuleReplacementPlugin(),
     ] : [
-      new ExtractTextPlugin('styles.css'),
+      new ExtractTextPlugin('../css/styles.css'),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -79,14 +82,16 @@ const clientConfig = {
       {
         test: /\.css$/,
         loaders: DEBUG
-          ? ['style', 'css?modules', 'postcss']
-          : ExtractTextPlugin.extract('style', 'css?modules&minimize', 'postcss'),
+          ? ['style-loader', 'css?modules', 'postcss']
+          : ExtractTextPlugin.extract('style', 'css?modules&minimize', 'postcss',
+            { publicPath: '../css' }
+          ),
         exclude: /node_modules/,
       },
     ],
   },
   postcss() {
-    return [autoprefixer];
+    return [autoprefixer, precss];
   },
 };
 

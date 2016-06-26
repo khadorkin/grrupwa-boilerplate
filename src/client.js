@@ -6,10 +6,13 @@ import { render } from 'react-dom';
 import { browserHistory, match, Router } from 'react-router/es6';
 import Relay from 'react-relay';
 import routes from './routes';
+import { loadCSS } from 'fg-loadcss';
 import fetchWithRetries from '../node_modules/fbjs/lib/fetchWithRetries';
 
+// Asynchronously load non-critical CSS.
+// Components that have critical-css use withStyles decorator
+if (!__DEV__) loadCSS('css/styles.css');
 const environment = new Relay.Environment();
-
 const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
 
 /*
@@ -18,11 +21,14 @@ const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
  * responses for offline usage.
 */
 DefaultNetworkLayer._sendQuery = (request) => {
-  return fetchWithRetries(`/graphql?query=${request.getQueryString()}&variables=${JSON.stringify(request.getVariables())}`, {
+  const query = request.getQueryString();
+  const variables = JSON.stringify(request.getVariables());
+
+  return fetchWithRetries(`/graphql?query=${query}&variables=${variables}`, {
     ...this._init,
     headers: {
       ...this._init.headers,
-      'Accept': '*/*',
+      Accept: '*/*',
     },
     method: 'GET',
   });
@@ -36,16 +42,11 @@ const rootEl = document.getElementById('root');
 
 match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
   IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
-    render(
+    render((
       <AppContainer>
-        <Router
-          {...props}
-          onReadyStateChange={(readyState) => {
-          }}
-        />
+        <Router {...props} />
       </AppContainer>
-      , rootEl
-    );
+    ), rootEl);
   });
 });
 
@@ -60,12 +61,11 @@ if (__DEV__ && module.hot) {
       history: browserHistory,
     }, (error, redirectLocation, renderProps) => {
       IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
-        render(
+        render((
           <AppContainer>
             <Router {...props} />
           </AppContainer>
-          , rootEl
-        );
+        ), rootEl);
       });
     });
   });
