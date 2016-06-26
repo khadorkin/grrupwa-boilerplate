@@ -18,13 +18,10 @@ const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
 /*
  * This portion is important for Offline mode.
  * We convert the requests from POST to GET, to allow Service Workers to cache
- * responses for offline usage.
+ * responses for offline usage. Must be a function expression to keep "this" reference
 */
-DefaultNetworkLayer._sendQuery = (request) => {
-  const query = request.getQueryString();
-  const variables = JSON.stringify(request.getVariables());
-
-  return fetchWithRetries(`/graphql?query=${query}&variables=${variables}`, {
+DefaultNetworkLayer._sendQuery = function (request) {
+  return fetchWithRetries(`/graphql?query=${request.getQueryString()}&variables=${JSON.stringify(request.getVariables())}`, {
     ...this._init,
     headers: {
       ...this._init.headers,
