@@ -1,6 +1,6 @@
 # GRRUPWA Boilerplate
 
-**(G)**raphQL **(R)**elay **(R)**eact **(U)**niversal **(P)**rogressive **(W)**eb **(A)**pplication Boilerplate is an ultimate stack for modern applications. 
+**(G)**raphQL **(R)**elay **(R)**eact **(U)**niversal **(P)**rogressive **(W)**eb **(A)**pplication Boilerplate is an ultimate stack for modern applications.
 
 The goal of the boilerplate is to provide the most optimal *Developer Experience* with focus on providing the best *User Experience*.
 
@@ -19,17 +19,20 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 
 ###ROADMAP
 
-- [x] production build
-- [x] Isomorphic relay/react-router
-- [x] codesplitting with react router
+- [x] Universal relay/react-router
+- [x] ~~Codesplitting with react router~~ (Reverted)
 - [x] PWA - App shell   
-- [x] PWA - offline   
-- [ ] Dynamic data caching   
-- [ ] Authentication on server   
+- [x] Dynamic content caching   
+- [x] Offline Handling status   
+- [ ] Critical css   
 - [ ] Resize image loader    
-- [ ] Offline Handling status
-- [ ] PWA - push notifications
-- [ ] HTML template in js
-- [ ] critical css
-- [ ] add AMP support
-- [ ] add test-runner
+- [ ] Assets hash    
+- [ ] HTML template   
+- [ ] Test-suite   
+- [ ] Demo site   
+
+###Future
+- [ ] PWA - push notifications   
+- [ ] Authentication on server   
+- [ ] HMR loading in memory for server bundle    
+- [ ] add AMP support   
