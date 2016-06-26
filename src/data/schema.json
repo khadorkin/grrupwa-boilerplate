@@ -79,7 +79,7 @@
               "deprecationReason": null
             },
             {
-              "name": "todos",
+              "name": "items",
               "description": null,
               "args": [
                 {
@@ -135,7 +135,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "TodoConnection",
+                "name": "ItemConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -186,7 +186,7 @@
             },
             {
               "kind": "OBJECT",
-              "name": "Todo",
+              "name": "Item",
               "ofType": null
             }
           ]
@@ -223,7 +223,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "TodoConnection",
+          "name": "ItemConnection",
           "description": "A connection to a list of items.",
           "fields": [
             {
@@ -251,7 +251,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "TodoEdge",
+                  "name": "ItemEdge",
                   "ofType": null
                 }
               },
@@ -343,7 +343,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "TodoEdge",
+          "name": "ItemEdge",
           "description": "An edge in a connection.",
           "fields": [
             {
@@ -352,7 +352,7 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Todo",
+                "name": "Item",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -382,7 +382,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "Todo",
+          "name": "Item",
           "description": null,
           "fields": [
             {

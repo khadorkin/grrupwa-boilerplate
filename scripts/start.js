@@ -17,12 +17,9 @@ async function start() {
   await run(clean);
   await run(build);
   await run(copy.bind(undefined, { watch: true }));
+  await run(precache);
 
   if (!DEBUG) {
-    // We do not want to use Service Worker because:
-    // 1. It will serve app.js from Service Worker, invalidating SSR (But, we could hash the bundle)
-    // 2. To update, we have to whitelist runtimeCaching (fetch from SW will disrupt updates)
-    await run(precache);
     runServer();
     return;
   }

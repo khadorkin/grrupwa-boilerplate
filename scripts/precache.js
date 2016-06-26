@@ -2,6 +2,7 @@ import swPrecache from 'sw-precache';
 import path from 'path';
 
 const VERBOSE = process.argv.includes('--verbose');
+const DEBUG = !process.argv.includes('--release');
 const rootDir = path.join(__dirname, '../build/public');
 
 async function precache() {
@@ -24,6 +25,7 @@ async function precache() {
         },
       ],
       stripPrefix: rootDir,
+      handleFetch: !DEBUG,
       importScripts: ['sw-toolbox.js'],
     }, output => resolve(output));
   });

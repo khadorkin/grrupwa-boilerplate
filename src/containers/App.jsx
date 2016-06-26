@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import { Link } from 'react-router';
 
 class App extends React.Component {
   static contextTypes = {
@@ -9,6 +10,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Link to="/">Home</Link>
+        <Link to="/PageA">PageA</Link>
+        <Link to="/PageB">PageB</Link>
         {this.props.children}
       </div>
     );

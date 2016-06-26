@@ -6,10 +6,29 @@ import { render } from 'react-dom';
 import { browserHistory, match, Router } from 'react-router/es6';
 import Relay from 'react-relay';
 import routes from './routes';
-
+import fetchWithRetries from '../node_modules/fbjs/lib/fetchWithRetries';
 
 const environment = new Relay.Environment();
-environment.injectNetworkLayer(new Relay.DefaultNetworkLayer('/graphql'));
+
+const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
+
+/*
+ * This portion is important for Offline mode.
+ * We convert the requests from POST to GET, to allow Service Workers to cache
+ * responses for offline usage.
+*/
+DefaultNetworkLayer._sendQuery = (request) => {
+  return fetchWithRetries(`/graphql?query=${request.getQueryString()}&variables=${JSON.stringify(request.getVariables())}`, {
+    ...this._init,
+    headers: {
+      ...this._init.headers,
+      'Accept': '*/*',
+    },
+    method: 'GET',
+  });
+};
+
+environment.injectNetworkLayer(DefaultNetworkLayer);
 const data = JSON.parse(document.getElementById('preloadedData').textContent);
 IsomorphicRelay.injectPreparedData(environment, data);
 
@@ -19,7 +38,11 @@ match({ routes, history: browserHistory }, (error, redirectLocation, renderProps
   IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
     render(
       <AppContainer>
-        <Router {...props} />
+        <Router
+          {...props}
+          onReadyStateChange={(readyState) => {
+          }}
+        />
       </AppContainer>
       , rootEl
     );
