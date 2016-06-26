@@ -1,49 +1,44 @@
 import { AppContainer } from 'react-hot-loader';
-import IsomorphicRelay from 'isomorphic-relay';
-import IsomorphicRouter from 'isomorphic-relay-router';
 import React from 'react';
 import { render } from 'react-dom';
-import { browserHistory, match, Router } from 'react-router/es6';
+import { browserHistory, Router } from 'react-router/es6';
 import Relay from 'react-relay';
 import routes from './routes';
+import ApolloClient from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { syncHistoryWithStore } from 'react-router-redux';
+import createStore from './store';
 
-
-const environment = new Relay.Environment();
-environment.injectNetworkLayer(new Relay.DefaultNetworkLayer('/graphql'));
-const data = JSON.parse(document.getElementById('preloadedData').textContent);
-IsomorphicRelay.injectPreparedData(environment, data);
-
+const client = new ApolloClient();
+const store = createStore();
+const history = syncHistoryWithStore(browserHistory, store);
 const rootEl = document.getElementById('root');
 
-match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
-  IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
-    render(
-      <AppContainer>
-        <Router {...props} />
-      </AppContainer>
-      , rootEl
-    );
-  });
-});
+render(
+  <AppContainer>
+    <ApolloProvider store={store} client={client}>
+      <Router history={history}>
+        {routes}
+      </Router>
+    </ApolloProvider>
+  </AppContainer>,
+  rootEl
+);
+
 
 if (__DEV__ && module.hot) {
   module.hot.accept('./routes', () => {
     const nextRoutes = require('./routes').default;
 
-    // Displays react-router error on the browser. Might be required to replace with
-    // React-transform to avoid seeing the error
-    match({
-      routes: nextRoutes,
-      history: browserHistory,
-    }, (error, redirectLocation, renderProps) => {
-      IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
-        render(
-          <AppContainer>
-            <Router {...props} />
-          </AppContainer>
-          , rootEl
-        );
-      });
-    });
+    render(
+      <AppContainer>
+        <ApolloProvider store={store} client={client}>
+          <Router history={browserHistory}>
+            {nextRoutes}
+          </Router>
+        </ApolloProvider>
+      </AppContainer>,
+      rootEl
+    );
   });
 }

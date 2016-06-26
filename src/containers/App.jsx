@@ -1,26 +1,23 @@
 import React from 'react';
-import Relay from 'react-relay';
+import { Link } from 'react-router';
+import { connect } from 'react-apollo';
 
-class App extends React.Component {
-  static contextTypes = {
-    relay: Relay.PropTypes.Environment,
-  };
-
+@connect(
+  state => (
+    {
+      apollo: state.apollo,
+    }
+  )
+)
+export default class App extends React.Component {
   render() {
     return (
       <div>
+        <Link to="/">Home</Link>
+        <Link to="/PageA">Page A</Link>
+        <Link to="/PageB">Page B</Link>
         {this.props.children}
       </div>
     );
   }
 }
-
-export default Relay.createContainer(App, {
-  fragments: {
-    viewer: () => Relay.QL`
-      fragment on User {
-        id
-      }
-    `,
-  },
-});

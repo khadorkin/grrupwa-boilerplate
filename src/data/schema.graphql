@@ -2,6 +2,22 @@ schema {
   query: Root
 }
 
+type Item implements Node {
+  id: ID!
+  text: String
+  category: String
+}
+
+type ItemConnection {
+  pageInfo: PageInfo!
+  edges: [ItemEdge]
+}
+
+type ItemEdge {
+  node: Item
+  cursor: String!
+}
+
 interface Node {
   id: ID!
 }
@@ -18,23 +34,7 @@ type Root {
   node(id: ID!): Node
 }
 
-type Todo implements Node {
-  id: ID!
-  text: String
-  category: String
-}
-
-type TodoConnection {
-  pageInfo: PageInfo!
-  edges: [TodoEdge]
-}
-
-type TodoEdge {
-  node: Todo
-  cursor: String!
-}
-
 type User implements Node {
   id: ID!
-  todos(category: String = "any", after: String, first: Int, before: String, last: Int): TodoConnection
+  items(category: String = "any", after: String, first: Int, before: String, last: Int): ItemConnection
 }

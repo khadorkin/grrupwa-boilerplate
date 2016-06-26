@@ -59,7 +59,7 @@
     "postcss-loader": "^0.9.1",
     "react-hot-loader": "^3.0.0-beta.2",
     "style-loader": "^0.13.1",
-    "stylelint": "^6.7.0",
+    "stylelint": "^6.7.1",
     "stylelint-config-standard": "^9.0.0",
     "sw-precache": "^3.2.0",
     "url-loader": "^0.5.7",
@@ -68,6 +68,7 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "apollo-client": "^0.3.20",
     "express": "^4.14.0",
     "express-graphql": "^0.5.3",
     "graphql": "^0.6.0",
@@ -75,9 +76,11 @@
     "isomorphic-relay": "^0.7.0",
     "isomorphic-relay-router": "^0.8.0",
     "react": "^15.1.0",
+    "react-apollo": "^0.3.10",
     "react-dom": "^15.1.0",
-    "react-relay": "^0.9.0",
-    "react-router": "^2.5.0",
-    "react-router-relay": "^0.13.3"
+    "react-router": "^2.5.1",
+    "react-router-redux": "^4.0.5",
+    "react-router-relay": "^0.13.3",
+    "redux": "^3.5.2"
   }
 }

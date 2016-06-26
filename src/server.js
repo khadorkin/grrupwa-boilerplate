@@ -1,24 +1,22 @@
-import { match } from 'react-router';
+import { match, RouterContext } from 'react-router';
 import express from 'express';
-import graphQLHTTP from 'express-graphql';
-import IsomorphicRouter from 'isomorphic-relay-router';
+import graphQLMiddleware from 'express-graphql';
 import path from 'path';
 import ReactDOMServer from 'react-dom/server';
-import Relay from 'react-relay';
-
+import React from 'react';
+import createStore from './store';
+import { ApolloProvider } from 'react-apollo';
+import ApolloClient from 'apollo-client';
 import { schema } from './data/schema';
 import routes from './routes';
 
+const client = new ApolloClient();
 const APP_PORT = 3000;
 const app = express();
 
-const GRAPHQL_URL = `http://localhost:${APP_PORT}/graphql`;
-
-const networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL);
-
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
-app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
+app.use('/graphql', graphQLMiddleware({ schema, pretty: true, graphiql: true }));
 
 app.get('*', (req, res, next) => {
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -27,14 +25,17 @@ app.get('*', (req, res, next) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      IsomorphicRouter.prepareData(renderProps, networkLayer).then(render, next);
-    } else {
-      res.status(404).send('Not Found');
-    }
+      const store = createStore();
+      // client is an instance of ApolloClient
+      const reactOutput = ReactDOMServer.renderToString(
+        <ApolloProvider store={store} client={client}>
+          <RouterContext {...renderProps} />
+        </ApolloProvider>
+      );
 
-    function render({ data, props }) {
-      const reactOutput = ReactDOMServer.renderToString(IsomorphicRouter.render(props));
-      res.send(`
+      const initialState = store.getState();
+
+      res.status(200).send(`
         <!doctype html>
         <html>
         <head>
@@ -70,9 +71,7 @@ app.get('*', (req, res, next) => {
         </head>
         <body>
           <div id="root">${reactOutput}</div>
-          <script id="preloadedData" type="application/json">
-              ${JSON.stringify(data).replace(/\//g, '\\/')}
-          </script>
+          <script dangerouslySetInnerHTML={{__html: window.__APOLLO_CONTEXT__ = ${JSON.stringify(initialState)};}}></script>
           <script src="js/app.js"></script>
           <script>
             if ('serviceWorker' in navigator) {
@@ -106,6 +105,8 @@ app.get('*', (req, res, next) => {
         </body>
         </html>
       `);
+    } else {
+      res.status(404).send('Not Found');
     }
   });
 });
