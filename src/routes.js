@@ -13,17 +13,22 @@ function prepareItemListParams(params) {
 }
 export default (
   <Route path="/" component={App} queries={ViewerQueries}>
-    <IndexRoute component={Page} queries={ViewerQueries} prepareParams={prepareItemListParams} render={({ props, done, error, retry }) => {
-      return props ? <Page {...props} /> : <div>Loading</div>;
-    }} />
+    <IndexRoute
+      component={Page}
+      queries={ViewerQueries}
+      prepareParams={prepareItemListParams}
+      render={({ props, done, error, retry }) => (
+        props ? <Page {...props} /> : <div>Loading</div>
+      )}
+    />
     <Route
       path=":category"
       component={Page}
       queries={ViewerQueries}
       prepareParams={prepareItemListParams}
-      render={({ props, done, error, retry }) => {
-        return props ? <Page {...props} /> : <div>Loading</div>;
-      }}
+      render={({ props, done, error, retry }) => (
+        props ? <Page {...props} /> : <div>Loading</div>
+      )}
     />
   </Route>
 );
