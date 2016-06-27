@@ -5,9 +5,10 @@ type Props = {
   markup: string,
   preloadedData: string,
   head: Object,
+  assets: Object,
 }
 
-const Html = ({ markup, preloadedData, head, criticalCss }: Props) => (
+const Html = ({ markup, preloadedData, head, criticalCss, assets }: Props) => (
   <html>
     <head>
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -48,7 +49,7 @@ const Html = ({ markup, preloadedData, head, criticalCss }: Props) => (
         type="application/json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(preloadedData).replace(/\//g, '\\/') }}
       />
-      <script src="js/app.js"></script>
+      <script src={assets.main.js}></script>
       <script
         dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {

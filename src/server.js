@@ -11,6 +11,7 @@ import Html from './lib/Html';
 import Helmet from 'react-helmet';
 import { schema } from './data/schema';
 import routes from './routes';
+import fs from 'fs';
 
 const APP_PORT = 3000;
 const app = express();
@@ -46,8 +47,11 @@ app.get('*', (req, res, next) => {
         );
 
         let head = Helmet.rewind();
+        const assets = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json')));
+
         res.status(200).send(ReactDOMServer.renderToString(
           <Html
+            assets={assets}
             head={head}
             criticalCss={css.join('')}
             markup={reactOutput}

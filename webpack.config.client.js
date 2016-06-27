@@ -1,4 +1,5 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import AssetsPlugin from 'assets-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import precss from 'precss';
 import webpack from 'webpack';
@@ -18,7 +19,7 @@ const clientConfig = {
   ],
   output: {
     path: path.join(__dirname, 'build/public/js'),
-    filename: 'app.js',
+    filename: 'app.[hash].js',
     chunkFilename: '[id].app.js',
     publicPath: '/js/',
   },
@@ -26,6 +27,10 @@ const clientConfig = {
     extensions: ['', '.js', '.jsx'],
   },
   plugins: [
+    new AssetsPlugin({
+      filename: 'assets.json',
+      path: path.join(__dirname, 'build'),
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
