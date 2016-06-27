@@ -25,8 +25,8 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 - [x] Dynamic content caching   
 - [x] Offline Handling status   
 - [x] Critical css   
-- [ ] HTML template   
-- [ ] Assets hash    
+- [x] HTML template   
+- [x] Assets hash    
 - [ ] Test-suite   
 - [ ] Demo site   
 
