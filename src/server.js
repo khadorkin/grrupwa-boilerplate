@@ -2,6 +2,7 @@ import { match } from 'react-router';
 import express from 'express';
 import graphQLHTTP from 'express-graphql';
 import IsomorphicRouter from 'isomorphic-relay-router';
+import compression from 'compression';
 import path from 'path';
 import ReactDOMServer from 'react-dom/server';
 import Relay from 'react-relay';
@@ -20,6 +21,7 @@ const GRAPHQL_URL = `http://localhost:${APP_PORT}/graphql`;
 
 const networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL);
 
+app.use(compression());
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
