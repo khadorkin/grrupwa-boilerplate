@@ -56,8 +56,9 @@ export class App extends React.Component {
     return (
       <AppShell>
         <Link to="/">Home</Link>
-        <Link to="/PageA">PageA</Link>
-        <Link to="/PageB">PageB</Link>
+        <Link to="/page/PageA">PageA</Link>
+        <Link to="/page/PageB">PageB</Link>
+        <Link to="/protected">Protected</Link>
         {this.props.children}
         <div className={styles.status}>Current status: {isOnline ? 'Online' : 'Offline'}</div>
       </AppShell>

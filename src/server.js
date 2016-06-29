@@ -3,20 +3,23 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import expressJwt from 'express-jwt';
 import fs from 'fs';
-import graphQLHTTP from 'express-graphql';
+import expressGraphQL from 'express-graphql';
 import Helmet from 'react-helmet';
 import IsomorphicRouter from 'isomorphic-relay-router';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Relay from 'react-relay';
 
-import { PORT, HOST, DATABASE_URL } from './config';
+import { auth, PORT, HOST, DATABASE_URL } from './config';
 import { schema } from './data/schema';
 import Html from './helpers/Html';
-import routes from './routes';
+import passport from './data/passport';
+import getRoutes from './routes';
 import WithStylesContext from './helpers/WithStylesContext';
 
 const app = express();
@@ -24,7 +27,7 @@ mongoose.connect(DATABASE_URL);
 const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}/graphql`);
 
 //
-// Register Node.js middleware
+// Register Node middleware
 // -----------------------------------------------------------------------------
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(compression());
@@ -33,9 +36,37 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //
+// Register Authentication middleware
+// -----------------------------------------------------------------------------
+app.use(expressJwt({
+  secret: auth.jwt.secret,
+  credentialsRequired: false,
+  getToken: req => req.cookies.id_token,
+}));
+
+app.use(passport.initialize());
+
+app.get('/login/facebook',
+  passport.authenticate('facebook', { scope: ['email', 'user_location'], session: false })
+);
+app.get('/login/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/login', session: false }),
+  (req, res) => {
+    const expiresIn = 60 * 60 * 24 * 180; // 180 days
+    const token = jwt.sign(req.user, auth.jwt.secret, { expiresIn });
+    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
+    res.redirect('/');
+  }
+);
+//
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
+app.use('/graphql', expressGraphQL(req => ({
+  graphiql: true,
+  pretty: process.env.NODE_ENV !== 'production',
+  rootValue: { request: req },
+  schema,
+})));
 
 //
 // Register server-side rendering middleware
@@ -69,8 +100,9 @@ app.get('*', (req, res, next) => {
       res.status(500).send('Something went wrong.');
     }
   }
+  const token = req.cookies.id_token;
 
-  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+  match({ routes: getRoutes(token), location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       next(error);
     } else if (redirectLocation) {

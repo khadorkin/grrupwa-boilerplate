@@ -6,7 +6,8 @@ import IsomorphicRouter from 'isomorphic-relay-router';
 import React from 'react';
 import Relay from 'react-relay';
 
-import routes from './routes';
+import getRoutes from './routes';
+import getCookie from './helpers/getCookie';
 import WithStylesContext from './helpers/WithStylesContext';
 import fetchWithRetries from '../node_modules/fbjs/lib/fetchWithRetries';
 
@@ -21,6 +22,8 @@ if (!__DEV__) loadCSS('css/styles.css');
 */
 const environment = new Relay.Environment();
 const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
+const rootEl = document.getElementById('root');
+const token = getCookie('id_token');
 
 DefaultNetworkLayer._sendQuery = function modifiedSendQuery(request) {
   return fetchWithRetries(`/graphql?query=${request.getQueryString()}&variables=${JSON.stringify(request.getVariables())}`, {
@@ -37,10 +40,9 @@ environment.injectNetworkLayer(DefaultNetworkLayer);
 const data = JSON.parse(document.getElementById('preloadedData').textContent);
 IsomorphicRelay.injectPreparedData(environment, data);
 
-const rootEl = document.getElementById('root');
 
 if (!__DEV__) {
-  match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
+  match({ routes: getRoutes(token), history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
       render((
         <WithStylesContext onInsertCss={() => {}}>
@@ -51,7 +53,7 @@ if (!__DEV__) {
   });
 } else if (__DEV__ && module.hot) {
   const { AppContainer } = require('react-hot-loader');
-  match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
+  match({ routes: getRoutes(token), history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
       render((
         <AppContainer>
@@ -62,12 +64,12 @@ if (!__DEV__) {
   });
 
   module.hot.accept('./routes', () => {
-    const nextRoutes = require('./routes').default;
+    const getNextRoutes = require('./routes').default;
 
     // Displays react-router error on the browser. Might be required to replace with
     // React-transform to avoid seeing the error
     match({
-      routes: nextRoutes,
+      routes: getNextRoutes(token),
       history: browserHistory,
     }, (error, redirectLocation, renderProps) => {
       IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
