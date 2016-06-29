@@ -1,5 +1,5 @@
 {
-  "name": "react-relay-graphql-isomorphic-pwa-boilerplate",
+  "name": "grrupwa-boilerplate",
   "version": "0.0.1",
   "description": "Boilerplate for ultimate stack",
   "main": "index.js",
@@ -20,20 +20,25 @@
       "fbjs",
       "enzyme",
       "isomorphic-style-loader",
-      "react-relay"
+      "react-relay",
+      "test/RelayTestUtils"
     ],
     "moduleNameMapper": {
-      "^.+\\.(css|less)$": "<rootDir>/test/styleMock.js",
-      "^.+\\.(gif|ttf|eot|svg)$": "<rootDir>/test/fileMock.js"
+      "^.+\\.(css|less)$": "<rootDir>/test/__mocks__/styleMock.js",
+      "^.+\\.(gif|ttf|eot|svg)$": "<rootDir>/test/__mocks__/fileMock.js"
     },
-    "moduleFileExtensions": ["js", "jsx", "json"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json"
+    ],
     "globals": {
       "__DEV__": true
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/minheq/react-relay-graphql-isomorphic-pwa-boilerplate.git"
+    "url": "git+https://github.com/minheq/grrupwa-boilerplate.git"
   },
   "keywords": [
     "react",
@@ -46,9 +51,9 @@
   "author": "Vu Hoang Minh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/minheq/react-relay-graphql-isomorphic-pwa-boilerplate/issues"
+    "url": "https://github.com/minheq/grrupwa-boilerplate/issues"
   },
-  "homepage": "https://github.com/minheq/react-relay-graphql-isomorphic-pwa-boilerplate#readme",
+  "homepage": "https://github.com/minheq/grrupwa-boilerplate#readme",
   "devDependencies": {
     "assets-webpack-plugin": "^3.4.0",
     "autoprefixer": "^6.3.6",
@@ -60,7 +65,7 @@
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
-    "babel-preset-react": "^6.11.0",
+    "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-relay-plugin": "^0.9.1",
     "bluebird": "^3.4.1",

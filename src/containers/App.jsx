@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import AppShell from '../components/AppShell';
 import styles from './App.css';
 
-class App extends React.Component {
+export class App extends React.Component {
   static contextTypes = {
     relay: Relay.PropTypes.Environment,
   }
