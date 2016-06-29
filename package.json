@@ -4,13 +4,14 @@
   "description": "Boilerplate for ultimate stack",
   "main": "index.js",
   "scripts": {
-    "update-schema": "babel-node ./scripts/updateSchema.js",
-    "clean": "babel-node scripts/run clean",
-    "precache": "babel-node scripts/run precache",
-    "copy": "babel-node scripts/run copy",
     "build": "babel-node scripts/run build",
+    "clean": "babel-node scripts/run clean",
+    "copy": "babel-node scripts/run copy",
+    "precache": "babel-node scripts/run precache",
+    "seed": "babel-node scripts/run seed",
     "start": "npm run update-schema && babel-node scripts/run start",
-    "test": "jest"
+    "test": "jest",
+    "update-schema": "babel-node ./scripts/updateSchema.js"
   },
   "jest": {
     "unmockedModulePathPatterns": [

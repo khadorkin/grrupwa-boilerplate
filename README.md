@@ -7,7 +7,7 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 **Developer Experience (DX)**  
 1. Fast hot-reloading of server and client side code   
 2. Crossbrowser debugging  
-3. GraphQL and Relay integration  
+3. GraphQL and Relay integration   
 4. More...  
 
 **User Experience (DX)**  
@@ -22,17 +22,18 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 - [x] Universal relay/react-router   
 - [x] ~~Codesplitting with react router~~ (Reverted)   
 - [x] PWA - App shell   
-- [x] Dynamic content caching   
-- [x] Offline Handling status   
-- [x] Critical css   
-- [x] HTML template   
-- [x] Assets hash    
-- [x] Test-suite   
-- [ ] Demo site   
+- [x] Dynamic content caching    
+- [x] Offline Handling status    
+- [x] Critical css    
+- [x] HTML template    
+- [x] Assets hash     
+- [x] Test-suite     
+- [ ] MongoDB setup    
+- [ ] Authentication    
+- [ ] Resize image loader    
+- [ ] Demo site    
 
 ###Future
-- [ ] PWA - push notifications   
-- [ ] Authentication on server   
 - [ ] HMR loading in memory for server bundle    
-- [ ] add AMP support   
-- [ ] Resize image loader    
+- [ ] PWA - push notifications   
+- [ ] AMP support   

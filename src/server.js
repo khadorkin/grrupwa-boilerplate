@@ -19,7 +19,6 @@ import Html from './helpers/Html';
 import routes from './routes';
 import WithStylesContext from './helpers/WithStylesContext';
 
-
 const app = express();
 mongoose.connect(DATABASE_URL);
 const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}/graphql`);
@@ -27,8 +26,7 @@ const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}/graphql`);
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
-
-app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,6 +41,35 @@ app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', (req, res, next) => {
+  function render({ data, props }) {
+    try {
+      const css = [];
+
+      const reactOutput = ReactDOMServer.renderToString(
+        /* eslint-disable no-underscore-dangle */
+        // Necessary for importing critical-css
+        <WithStylesContext onInsertCss={styles => css.push(styles._getCss())}>
+          {IsomorphicRouter.render(props)}
+        </WithStylesContext>
+      );
+
+      let head = Helmet.rewind();
+      const assets = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json')));
+
+      res.status(200).send(ReactDOMServer.renderToString(
+        <Html
+          assets={assets}
+          head={head}
+          criticalCss={css.join('')}
+          markup={reactOutput}
+          preloadedData={data}
+        />
+      ));
+    } catch (err) {
+      res.status(500).send('Something went wrong.');
+    }
+  }
+
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       next(error);
@@ -53,41 +80,13 @@ app.get('*', (req, res, next) => {
     } else {
       res.status(404).send('Not Found');
     }
-
-    function render({ data, props }) {
-      try {
-        const css = [];
-
-        const reactOutput = ReactDOMServer.renderToString(
-          <WithStylesContext onInsertCss={styles => css.push(styles._getCss())}>
-            {IsomorphicRouter.render(props)}
-          </WithStylesContext>
-        );
-
-        let head = Helmet.rewind();
-        const assets = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json')));
-
-        res.status(200).send(ReactDOMServer.renderToString(
-          <Html
-            assets={assets}
-            head={head}
-            criticalCss={css.join('')}
-            markup={reactOutput}
-            preloadedData={data}
-          />
-        ));
-      } catch (err) {
-        console.log(err);
-        res.status(500).send('Something went wrong.');
-      }
-    }
   });
 });
 
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-/* eslint-disable no-console */
 app.listen(PORT, () => {
+  /* eslint-disable no-console */
   console.log(`App is now running on ${HOST}`);
 });
