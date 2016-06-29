@@ -1,31 +1,47 @@
 import { match } from 'react-router';
-import express from 'express';
-import graphQLHTTP from 'express-graphql';
-import IsomorphicRouter from 'isomorphic-relay-router';
+import bodyParser from 'body-parser';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import fs from 'fs';
+import graphQLHTTP from 'express-graphql';
+import Helmet from 'react-helmet';
+import IsomorphicRouter from 'isomorphic-relay-router';
+import mongoose from 'mongoose';
 import path from 'path';
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Relay from 'react-relay';
-import React from 'react';
-import WithStylesContext from './components/WithStylesContext';
-import Html from './lib/Html';
-import Helmet from 'react-helmet';
+
+import { PORT, HOST, DATABASE_URL } from './config';
 import { schema } from './data/schema';
+import Html from './helpers/Html';
 import routes from './routes';
-import fs from 'fs';
+import WithStylesContext from './helpers/WithStylesContext';
 
-const APP_PORT = 3000;
+
 const app = express();
+mongoose.connect(DATABASE_URL);
+const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}:${PORT}/graphql`);
 
-const GRAPHQL_URL = `http://localhost:${APP_PORT}/graphql`;
+//
+// Register Node.js middleware
+// -----------------------------------------------------------------------------
 
-const networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL);
-
-app.use(compression());
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+app.use(compression());
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
+//
+// Register API middleware
+// -----------------------------------------------------------------------------
 app.use('/graphql', graphQLHTTP({ schema, pretty: true, graphiql: true }));
 
+//
+// Register server-side rendering middleware
+// -----------------------------------------------------------------------------
 app.get('*', (req, res, next) => {
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -68,6 +84,10 @@ app.get('*', (req, res, next) => {
   });
 });
 
-app.listen(APP_PORT, () => {
-  console.log(`App is now running on http://localhost:${APP_PORT}`);
+//
+// Launch the server
+// -----------------------------------------------------------------------------
+/* eslint-disable no-console */
+app.listen(PORT, () => {
+  console.log(`App is now running on ${HOST}:${PORT}`);
 });
