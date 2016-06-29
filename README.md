@@ -19,15 +19,15 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 
 ###ROADMAP
 
-- [x] Universal relay/react-router
-- [x] ~~Codesplitting with react router~~ (Reverted)
+- [x] Universal relay/react-router   
+- [x] ~~Codesplitting with react router~~ (Reverted)   
 - [x] PWA - App shell   
 - [x] Dynamic content caching   
 - [x] Offline Handling status   
 - [x] Critical css   
 - [x] HTML template   
 - [x] Assets hash    
-- [ ] Test-suite   
+- [x] Test-suite   
 - [ ] Demo site   
 
 ###Future
