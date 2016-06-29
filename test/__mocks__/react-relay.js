@@ -14,7 +14,7 @@ export default {
 
     // mock the static container methods
     Object.assign(component, {
-      getFragment: (fragmentName) => fragments[fragmentName],
+      getFragment: fragmentName => fragments[fragmentName],
     });
 
     return component;

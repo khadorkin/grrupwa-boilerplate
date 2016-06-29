@@ -20,7 +20,6 @@
       "fbjs",
       "enzyme",
       "isomorphic-style-loader",
-      "react-relay",
       "test/RelayTestUtils"
     ],
     "moduleNameMapper": {
@@ -33,7 +32,7 @@
       "json"
     ],
     "globals": {
-      "__DEV__": true
+      "__DEV__": false
     }
   },
   "repository": {

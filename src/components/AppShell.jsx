@@ -10,4 +10,4 @@ const AppShell = ({ children }) => (
 
 // We want to get the critical css only on the server
 // In production, css will
-export default !__DEV__ ? AppShell : withStyles(styles)(AppShell);
+export default __DEV__ ? AppShell : withStyles(styles)(AppShell);
