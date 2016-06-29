@@ -7,7 +7,6 @@ import React from 'react';
 import Relay from 'react-relay';
 
 import getRoutes from './routes';
-import getCookie from './helpers/getCookie';
 import WithStylesContext from './helpers/WithStylesContext';
 import fetchWithRetries from '../node_modules/fbjs/lib/fetchWithRetries';
 
@@ -23,7 +22,6 @@ if (!__DEV__) loadCSS('css/styles.css');
 const environment = new Relay.Environment();
 const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
 const rootEl = document.getElementById('root');
-const token = getCookie('id_token');
 
 DefaultNetworkLayer._sendQuery = function modifiedSendQuery(request) {
   return fetchWithRetries(`/graphql?query=${request.getQueryString()}&variables=${JSON.stringify(request.getVariables())}`, {
@@ -42,7 +40,7 @@ IsomorphicRelay.injectPreparedData(environment, data);
 
 
 if (!__DEV__) {
-  match({ routes: getRoutes(token), history: browserHistory }, (error, redirectLocation, renderProps) => {
+  match({ routes: getRoutes(), history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
       render((
         <WithStylesContext onInsertCss={() => {}}>
@@ -53,7 +51,7 @@ if (!__DEV__) {
   });
 } else if (__DEV__ && module.hot) {
   const { AppContainer } = require('react-hot-loader');
-  match({ routes: getRoutes(token), history: browserHistory }, (error, redirectLocation, renderProps) => {
+  match({ routes: getRoutes(), history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
       render((
         <AppContainer>
@@ -69,7 +67,7 @@ if (!__DEV__) {
     // Displays react-router error on the browser. Might be required to replace with
     // React-transform to avoid seeing the error
     match({
-      routes: getNextRoutes(token),
+      routes: getNextRoutes(),
       history: browserHistory,
     }, (error, redirectLocation, renderProps) => {
       IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {

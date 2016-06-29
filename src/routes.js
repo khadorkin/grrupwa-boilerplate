@@ -4,9 +4,10 @@ import { IndexRoute, Route } from 'react-router/es6';
 import App from './containers/App';
 import ViewerQueries from './queries/ViewerQueries';
 import Page from './containers/Page';
+import DOMUtils from './helpers/DOMUtils';
 import ProtectedPage from './containers/ProtectedPage';
 
-export default token => {
+export default serverToken => {
   function prepareItemListParams(params) {
     const mainCat = params.category ? params.category : 'any';
     return {
@@ -16,6 +17,15 @@ export default token => {
   }
 
   function requireAuth(nextState, replace, done) {
+    let token;
+    if (__CLIENT__) {
+      token = DOMUtils.getCookie('id_token');
+    }
+
+    if (__SERVER__) {
+      token = serverToken;
+    }
+
     if (!token) {
       replace({
         pathname: '/',
