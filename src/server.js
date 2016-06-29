@@ -22,7 +22,7 @@ import WithStylesContext from './helpers/WithStylesContext';
 
 const app = express();
 mongoose.connect(DATABASE_URL);
-const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}:${PORT}/graphql`);
+const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}/graphql`);
 
 //
 // Register Node.js middleware
@@ -89,5 +89,5 @@ app.get('*', (req, res, next) => {
 // -----------------------------------------------------------------------------
 /* eslint-disable no-console */
 app.listen(PORT, () => {
-  console.log(`App is now running on ${HOST}:${PORT}`);
+  console.log(`App is now running on ${HOST}`);
 });

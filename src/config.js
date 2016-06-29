@@ -11,7 +11,7 @@
 /* jscs:disable maximumLineLength */
 
 export const PORT = process.env.PORT || 3000;
-export const HOST = process.env.WEBSITE_HOSTNAME || `localhost:${PORT}`;
+export const HOST = process.env.WEBSITE_HOSTNAME || `http://localhost:${PORT}`;
 
 export const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost/grrupwa';
 
