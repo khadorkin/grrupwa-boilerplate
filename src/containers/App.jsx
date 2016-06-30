@@ -3,6 +3,8 @@ import Relay from 'react-relay';
 import { Link } from 'react-router';
 import AppShell from '../components/AppShell';
 import styles from './App.css';
+import { FormattedNumber, FormattedPlural } from 'react-intl';
+
 
 export class App extends React.Component {
   static contextTypes = {
@@ -21,6 +23,7 @@ export class App extends React.Component {
 
   state = {
     isOnline: true,
+    count: 5,
   };
 
   getChildContext() {
@@ -51,7 +54,7 @@ export class App extends React.Component {
   }
 
   render() {
-    const { isOnline } = this.state;
+    const { isOnline, count } = this.state;
 
     return (
       <AppShell>
@@ -61,6 +64,12 @@ export class App extends React.Component {
         <Link to="/protected">Protected</Link>
         {this.props.children}
         <div className={styles.status}>Current status: {isOnline ? 'Online' : 'Offline'}</div>
+        <FormattedNumber value={count} /> {' '}
+        <FormattedPlural
+          value={count}
+          one="item"
+          other="items"
+        />
       </AppShell>
     );
   }

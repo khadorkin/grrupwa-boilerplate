@@ -1,4 +1,5 @@
 import { browserHistory, match, Router } from 'react-router/es6';
+import { IntlProvider } from 'react-intl';
 import { loadCSS } from 'fg-loadcss';
 import { render } from 'react-dom';
 import IsomorphicRelay from 'isomorphic-relay';
@@ -49,7 +50,9 @@ if (!__DEV__) {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
       render((
         <WithStylesContext onInsertCss={() => {}}>
-          <Router {...props} />
+          <IntlProvider locale="en">
+            <Router {...props} />
+          </IntlProvider>
         </WithStylesContext>
       ), rootEl);
     });
@@ -62,7 +65,9 @@ if (!__DEV__) {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
       render((
         <AppContainer>
-          <Router {...props} />
+          <IntlProvider locale="en">
+            <Router {...props} />
+          </IntlProvider>
         </AppContainer>
       ), rootEl);
     });
@@ -80,7 +85,9 @@ if (!__DEV__) {
       IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
         render((
           <AppContainer>
-            <Router {...props} />
+            <IntlProvider locale="en">
+              <Router {...props} />
+            </IntlProvider>
           </AppContainer>
         ), rootEl);
       });

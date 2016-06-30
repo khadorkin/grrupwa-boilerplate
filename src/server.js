@@ -1,3 +1,4 @@
+import { IntlProvider } from 'react-intl';
 import { match } from 'react-router';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -22,6 +23,9 @@ import passport from './data/passport';
 import getRoutes from './routes';
 import WithStylesContext from './helpers/WithStylesContext';
 
+//
+// Initialize and setup our app, database
+// -----------------------------------------------------------------------------
 const app = express();
 mongoose.connect(DATABASE_URL);
 const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}/graphql`);
@@ -58,6 +62,7 @@ app.get('/login/facebook/return',
     res.redirect('/');
   }
 );
+
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
@@ -72,6 +77,22 @@ app.use('/graphql', expressGraphQL(req => ({
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', (req, res, next) => {
+  // Get JWT Token from cookie to authenticate user on entering a specific route
+  const token = req.cookies.id_token;
+
+  match({ routes: getRoutes(token), location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      next(error);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      IsomorphicRouter.prepareData(renderProps, networkLayer)
+        .then(render, next); // eslint-disable-line no-use-before-define
+    } else {
+      res.status(404).send('Not Found');
+    }
+  });
+
   function render({ data, props }) {
     try {
       const css = [];
@@ -80,7 +101,10 @@ app.get('*', (req, res, next) => {
         /* eslint-disable no-underscore-dangle */
         // Necessary for importing critical-css
         <WithStylesContext onInsertCss={styles => css.push(styles._getCss())}>
-          {IsomorphicRouter.render(props)}
+          <IntlProvider locale="en">
+            {IsomorphicRouter.render(props)}
+          </IntlProvider>
+
         </WithStylesContext>
       );
 
@@ -100,19 +124,6 @@ app.get('*', (req, res, next) => {
       res.status(500).send('Something went wrong.');
     }
   }
-  const token = req.cookies.id_token;
-
-  match({ routes: getRoutes(token), location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      next(error);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      IsomorphicRouter.prepareData(renderProps, networkLayer).then(render, next);
-    } else {
-      res.status(404).send('Not Found');
-    }
-  });
 });
 
 //
