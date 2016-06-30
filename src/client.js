@@ -21,7 +21,6 @@ if (!__DEV__) loadCSS('css/styles.css');
 */
 const environment = new Relay.Environment();
 const DefaultNetworkLayer = new Relay.DefaultNetworkLayer('/graphql');
-const rootEl = document.getElementById('root');
 
 DefaultNetworkLayer._sendQuery = function modifiedSendQuery(request) {
   return fetchWithRetries(`/graphql?query=${request.getQueryString()}&variables=${JSON.stringify(request.getVariables())}`, {
@@ -35,10 +34,16 @@ DefaultNetworkLayer._sendQuery = function modifiedSendQuery(request) {
 };
 
 environment.injectNetworkLayer(DefaultNetworkLayer);
+
+/*
+ * Mounting our application into DOM
+ * Seperate mount for DEV mode and production mode
+ */
+const rootEl = document.getElementById('root');
 const data = JSON.parse(document.getElementById('preloadedData').textContent);
 IsomorphicRelay.injectPreparedData(environment, data);
 
-
+// Production
 if (!__DEV__) {
   match({ routes: getRoutes(), history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then(props => {
@@ -49,6 +54,8 @@ if (!__DEV__) {
       ), rootEl);
     });
   });
+
+// Development
 } else if (__DEV__ && module.hot) {
   const { AppContainer } = require('react-hot-loader');
   match({ routes: getRoutes(), history: browserHistory }, (error, redirectLocation, renderProps) => {

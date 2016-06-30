@@ -28,8 +28,8 @@ The goal of the boilerplate is to provide the most optimal *Developer Experience
 - [x] HTML template    
 - [x] Assets hash     
 - [x] Test-suite     
-- [ ] MongoDB setup    
-- [ ] Authentication    
+- [x] MongoDB setup    
+- [x] Authentication    
 - [ ] Resize image loader    
 - [ ] Demo site    
 
