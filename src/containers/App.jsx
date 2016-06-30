@@ -3,6 +3,8 @@ import Relay from 'react-relay';
 import { Link } from 'react-router';
 import AppShell from '../components/AppShell';
 import styles from './App.css';
+import responsiveImage from './bigImage.jpg';
+// const responsiveImage = require('responsive?sizes[]=100,sizes[]=200,sizes[]=300!./bigImage.jpg');
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 
 
@@ -64,11 +66,17 @@ export class App extends React.Component {
         <Link to="/protected">Protected</Link>
         {this.props.children}
         <div className={styles.status}>Current status: {isOnline ? 'Online' : 'Offline'}</div>
-        <FormattedNumber value={count} /> {' '}
+        <FormattedNumber value={count} />
+        {' '}
         <FormattedPlural
           value={count}
           one="item"
           other="items"
+        />
+        <img
+          alt="Big size"
+          srcSet={responsiveImage}
+          src={responsiveImage}
         />
       </AppShell>
     );

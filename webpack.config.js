@@ -16,6 +16,10 @@ fs.readdirSync('node_modules')
   .forEach(mod => { nodeModules[mod] = `commonjs ${mod}`; });
 
 const config = {
+  output: {
+    path: path.join(__dirname, 'build/public/js'),
+    publicPath: '/js/',
+  },
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
@@ -39,11 +43,7 @@ const config = {
       },
       {
         test: /\.css$/,
-        loaders: DEBUG
-          ? ['isomorphic-style-loader', 'css?modules', 'postcss']
-          : ExtractTextPlugin.extract('style', 'css?modules&minimize', 'postcss',
-            { publicPath: '../css' }
-          ),
+        loaders: ['isomorphic-style-loader', 'css?modules', 'postcss'],
         exclude: /node_modules/,
       },
       {
@@ -83,8 +83,7 @@ const serverConfig = extend(true, {}, config, {
     './src/server',
   ],
   output: {
-    path: 'build',
-    filename: 'server.js',
+    filename: '../../server.js',
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -167,5 +166,17 @@ const clientConfig = extend(true, {}, config, {
     ],
   ],
 });
+
+if (!DEBUG) {
+  // Transform client config to output a css file for browser if in production mode
+  clientConfig.module.loaders[1] = {
+    test: /\.css$/,
+    loaders: ExtractTextPlugin.extract(
+      'isomorphic-style-loader', 'css?modules&minimize', 'postcss', {
+        publicPath: '../css',
+      }),
+    exclude: /node_modules/,
+  };
+}
 
 export default [clientConfig, serverConfig];

@@ -33,8 +33,8 @@ const networkLayer = new Relay.DefaultNetworkLayer(`${HOST}/graphql`);
 //
 // Register Node middleware
 // -----------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(compression());
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -120,6 +120,7 @@ app.get('*', (req, res, next) => {
         />
       ));
     } catch (err) {
+      console.log(err);
       res.status(500).send('Something went wrong.');
     }
   }
