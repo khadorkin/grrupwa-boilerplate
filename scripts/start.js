@@ -1,7 +1,6 @@
 import browserSync from 'browser-sync';
 import webpack from 'webpack';
-import serverConfig from '../webpack.config.server.js';
-import clientConfig from '../webpack.config.client.js';
+import webpackConfig from '../webpack.config.js';
 import runServer from './runServer';
 import run from './run';
 import copy from './copy';
@@ -27,7 +26,7 @@ async function start() {
   let handleServerBundleComplete = () => {
     runServer();
 
-    const bundler = webpack(clientConfig);
+    const bundler = webpack(webpackConfig[0]);
     const bs = browserSync.create();
 
     bs.init({
@@ -37,7 +36,6 @@ async function start() {
         middleware: [
           webpackDevMiddleware(bundler, {
             noInfo: true,
-            publicPath: clientConfig.output.publicPath,
           }),
           webpackHotMiddleware(bundler),
         ],
@@ -48,12 +46,12 @@ async function start() {
     handleServerBundleComplete = runServer;
   };
 
-  webpack(serverConfig).watch({
+  webpack(webpackConfig[1]).watch({
     aggregateTimeout: 300,
     poll: true,
   }, (err, stats) => {
     if (err) console.log(err);
-    console.log(stats.toString(clientConfig.stats));
+    console.log(stats.toString(webpackConfig[1].stats));
     handleServerBundleComplete();
   });
 }

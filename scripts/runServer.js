@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
 import path from 'path';
-import webpackConfig from '../webpack.config.server.js';
+import webpackConfig from '../webpack.config.js';
 
-const { output } = webpackConfig;
+const { output } = webpackConfig[1];
 const serverPath = path.join(output.path, output.filename);
 let server;
 

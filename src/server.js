@@ -104,7 +104,6 @@ app.get('*', (req, res, next) => {
           <IntlProvider locale="en">
             {IsomorphicRouter.render(props)}
           </IntlProvider>
-
         </WithStylesContext>
       );
 

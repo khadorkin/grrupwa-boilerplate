@@ -1,15 +1,14 @@
 import webpack from 'webpack';
-import serverConfig from '../webpack.config.server.js';
-import clientConfig from '../webpack.config.client.js';
+import webpackConfig from '../webpack.config.js';
 
 async function build() {
   return new Promise((resolve, reject) => {
-    webpack(serverConfig).run((errServer, serverStats) => {
+    webpack(webpackConfig[1]).run((errServer, serverStats) => {
       if (errServer) reject(errServer);
-      console.log(serverStats.toString(serverConfig.stats));
-      webpack(clientConfig).run((errClient, clientStats) => {
+      console.log(serverStats.toString(webpackConfig[1].stats));
+      webpack(webpackConfig[0]).run((errClient, clientStats) => {
         if (errClient) reject(errClient);
-        console.log(clientStats.toString(clientConfig.stats));
+        console.log(clientStats.toString(webpackConfig[0].stats));
         resolve();
       });
     });
