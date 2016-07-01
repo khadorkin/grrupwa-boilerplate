@@ -14,9 +14,7 @@ const Html = ({ markup, preloadedData, head, criticalCss, assets }: Props) => (
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta charSet="utf-8" />
       <title>GRRUPWA Boilerplate</title>
-
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-
       <link rel="manifest" href="manifest.json" />
       <meta name="theme-color" content="#7acc9c" />
 
@@ -41,7 +39,10 @@ const Html = ({ markup, preloadedData, head, criticalCss, assets }: Props) => (
       <meta name="theme-color" content="#7acc9c" />
       <meta name="msapplication-config" content="img/browserconfig.xml" />
       <style type="text/css" dangerouslySetInnerHTML={{ __html: criticalCss }} />
-      {!__DEV__ && <link rel="stylesheet" type="text/css" href="/css/styles.css" />}
+      {/* This snippet is taken from loadCSS.
+        We inline it here to async load css files below */}
+      <script dangerouslySetInnerHTML={{ __html: '!function(e){"use strict";var n=function(n,t,o){function i(e){return a.body?e():void setTimeout(function(){i(e)})}function r(){l.addEventListener&&l.removeEventListener("load",r),l.media=o||"all"}var d,a=e.document,l=a.createElement("link");if(t)d=t;else{var s=(a.body||a.getElementsByTagName("head")[0]).childNodes;d=s[s.length-1]}var f=a.styleSheets;l.rel="stylesheet",l.href=n,l.media="only x",i(function(){d.parentNode.insertBefore(l,t?d:d.nextSibling)});var u=function(e){for(var n=l.href,t=f.length;t--;)if(f[t].href===n)return e();setTimeout(function(){u(e)})};return l.addEventListener&&l.addEventListener("load",r),l.onloadcssdefined=u,u(r),l};"undefined"!=typeof exports?exports.loadCSS=n:e.loadCSS=n}("undefined"!=typeof global?global:this);' }} />
+      <script dangerouslySetInnerHTML={{ __html: 'loadCSS(\'/css/styles.css\');' }} />
     </head>
     <body>
       <div id="root" dangerouslySetInnerHTML={{ __html: markup }} />
@@ -54,7 +55,7 @@ const Html = ({ markup, preloadedData, head, criticalCss, assets }: Props) => (
       <script
         dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+            navigator.serviceWorker.register('/service-worker.js', { scope: './' })
               .then(function(registration) {
                 registration.onupdatefound = function() {
                   if (navigator.serviceWorker.controller) {

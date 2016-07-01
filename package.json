@@ -112,7 +112,6 @@
     "express": "^4.14.0",
     "express-graphql": "^0.5.3",
     "express-jwt": "^3.4.0",
-    "fg-loadcss": "^1.2.0",
     "graphql": "^0.6.0",
     "graphql-relay": "^0.4.2",
     "isomorphic-relay": "^0.7.0",
