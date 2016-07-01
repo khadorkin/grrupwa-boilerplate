@@ -1,6 +1,5 @@
 import { browserHistory, match, Router } from 'react-router/es6';
 import { IntlProvider } from 'react-intl';
-import { loadCSS } from 'fg-loadcss';
 import { render } from 'react-dom';
 import IsomorphicRelay from 'isomorphic-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
@@ -10,10 +9,6 @@ import Relay from 'react-relay';
 import getRoutes from './routes';
 import WithStylesContext from './helpers/WithStylesContext';
 import fetchWithRetries from '../node_modules/fbjs/lib/fetchWithRetries';
-
-// Asynchronously load non-critical CSS.
-// Components that have critical-css use withStyles decorator
-if (!__DEV__) loadCSS('css/styles.css');
 
 /*
  * This portion is important for Offline mode.

@@ -41,6 +41,7 @@ const Html = ({ markup, preloadedData, head, criticalCss, assets }: Props) => (
       <meta name="theme-color" content="#7acc9c" />
       <meta name="msapplication-config" content="img/browserconfig.xml" />
       <style type="text/css" dangerouslySetInnerHTML={{ __html: criticalCss }} />
+      {!__DEV__ && <link rel="stylesheet" type="text/css" href="/css/styles.css" />}
     </head>
     <body>
       <div id="root" dangerouslySetInnerHTML={{ __html: markup }} />
