@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from './AppShell.css';
 
@@ -10,4 +10,4 @@ const AppShell = ({ children }) => (
 
 // We want to get the critical css only on the server
 // In production, css will
-export default __DEV__ ? AppShell : withStyles(styles)(AppShell);
+export default __DEV__ || __CLIENT__ ? AppShell : withStyles(styles)(AppShell);

@@ -1,3 +1,7 @@
 .status {
   color: red;
 }
+
+.blurImage {
+  filter: blur(40px);
+}

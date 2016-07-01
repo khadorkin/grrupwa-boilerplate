@@ -1,4 +1,5 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import ImageminPlugin from 'imagemin-webpack-plugin';
 import extend from 'extend';
 import AssetsPlugin from 'assets-webpack-plugin';
 import autoprefixer from 'autoprefixer';
@@ -9,7 +10,16 @@ import path from 'path';
 
 const DEBUG = !process.argv.includes('--release');
 const VERBOSE = process.argv.includes('--verbose');
-
+const AUTOPREFIXER_BROWSERS = [
+  'Android 2.3',
+  'Android >= 4',
+  'Chrome >= 35',
+  'Firefox >= 31',
+  'Explorer >= 9',
+  'iOS >= 7',
+  'Opera >= 12',
+  'Safari >= 7.1',
+];
 const nodeModules = {};
 fs.readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
@@ -50,7 +60,6 @@ const config = {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
         ],
       },
       {
@@ -60,7 +69,10 @@ const config = {
     ],
   },
   postcss() {
-    return [autoprefixer, precss];
+    return [
+      autoprefixer({ browsers: AUTOPREFIXER_BROWSERS }),
+      precss,
+    ];
   },
   stats: {
     colors: true,
@@ -90,6 +102,15 @@ const serverConfig = extend(true, {}, config, {
       __DEV__: DEBUG,
       __CLIENT__: false,
       __SERVER__: true,
+    }),
+    new ImageminPlugin({
+      disable: DEBUG,
+      optipng: {
+        optimizationLevel: 7,
+      },
+      jpegtran: {
+        progressive: false,
+      },
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: !DEBUG,
@@ -140,6 +161,15 @@ const clientConfig = extend(true, {}, config, {
       filename: 'assets.json',
       path: path.join(__dirname, 'build'),
     }),
+    new ImageminPlugin({
+      disable: DEBUG,
+      optipng: {
+        optimizationLevel: 7,
+      },
+      jpegtran: {
+        progressive: false,
+      },
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
@@ -166,15 +196,13 @@ const clientConfig = extend(true, {}, config, {
 
 // TODO: Find a way to include this inside clientConfig without hardcoding
 // index to loaders
-if (!DEBUG) {
-  // Transform client config to output a css file for browser if in production mode
-  clientConfig.module.loaders[1] = {
-    test: /\.css$/,
-    loaders: ExtractTextPlugin.extract(
-      'isomorphic-style-loader', 'css?modules&minimize', 'postcss', {
-        publicPath: '../css',
-      }),
-    exclude: /node_modules/,
-  };
-}
+// Transform client config to output a css file for browser if in production mode
+clientConfig.module.loaders[1] = {
+  test: /\.css$/,
+  loaders: DEBUG
+    ? ['style', 'css?modules', 'postcss']
+    : ExtractTextPlugin.extract('style', 'css?modules&minimize!postcss'),
+  exclude: /node_modules/,
+};
+
 export default [clientConfig, serverConfig];

@@ -6,7 +6,6 @@ import styles from './App.css';
 import responsiveImage from 'responsive?sizes[]=100,sizes[]=200,sizes[]=300&quality=5!./bigImage.jpg';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 
-
 export class App extends React.Component {
   static contextTypes = {
     relay: Relay.PropTypes.Environment,
@@ -73,6 +72,7 @@ export class App extends React.Component {
           other="items"
         />
         <img
+          className={styles.blurImage}
           alt="Big size"
           {...responsiveImage}
         />
