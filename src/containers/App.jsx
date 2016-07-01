@@ -3,8 +3,7 @@ import Relay from 'react-relay';
 import { Link } from 'react-router';
 import AppShell from '../components/AppShell';
 import styles from './App.css';
-import responsiveImage from './bigImage.jpg';
-// const responsiveImage = require('responsive?sizes[]=100,sizes[]=200,sizes[]=300!./bigImage.jpg');
+import responsiveImage from 'responsive?sizes[]=100,sizes[]=200,sizes[]=300&quality=5!./bigImage.jpg';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 
 
@@ -75,8 +74,7 @@ export class App extends React.Component {
         />
         <img
           alt="Big size"
-          srcSet={responsiveImage}
-          src={responsiveImage}
+          {...responsiveImage}
         />
       </AppShell>
     );

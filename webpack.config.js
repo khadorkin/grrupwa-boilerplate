@@ -17,8 +17,8 @@ fs.readdirSync('node_modules')
 
 const config = {
   output: {
-    path: path.join(__dirname, 'build/public/js'),
-    publicPath: '/js/',
+    path: path.join(__dirname, 'build/public/assets'),
+    publicPath: '/assets/',
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
@@ -51,7 +51,6 @@ const config = {
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
           'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
-          // 'responsive?sizes[]=100,sizes[]=200,sizes[]=300',
         ],
       },
       {
@@ -133,7 +132,6 @@ const clientConfig = extend(true, {}, config, {
     './src/client',
   ],
   output: {
-    path: path.join(__dirname, 'build/public/js'),
     filename: 'app.[hash].js',
     chunkFilename: '[hash].[id].app.js',
   },
@@ -142,7 +140,6 @@ const clientConfig = extend(true, {}, config, {
       filename: 'assets.json',
       path: path.join(__dirname, 'build'),
     }),
-    // new webpack.IgnorePlugin(/\.(png|jpg|jpeg|gif|svg)$/),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
       __DEV__: DEBUG,
@@ -167,6 +164,8 @@ const clientConfig = extend(true, {}, config, {
   ],
 });
 
+// TODO: Find a way to include this inside clientConfig without hardcoding
+// index to loaders
 if (!DEBUG) {
   // Transform client config to output a css file for browser if in production mode
   clientConfig.module.loaders[1] = {
@@ -178,5 +177,4 @@ if (!DEBUG) {
     exclude: /node_modules/,
   };
 }
-
 export default [clientConfig, serverConfig];
