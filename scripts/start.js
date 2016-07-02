@@ -36,6 +36,7 @@ async function start() {
         middleware: [
           webpackDevMiddleware(bundler, {
             noInfo: true,
+            publicPath: webpackConfig[0].output.publicPath,
           }),
           webpackHotMiddleware(bundler),
         ],
